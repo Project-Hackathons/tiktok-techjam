@@ -26,22 +26,28 @@ export default function Home() {
             Good Morning, <b>Joseph</b>!
           </div>
         </div>
-        <div className={styles.buttonsContainer}>
-          <div className={styles.largeButton}>
-            <BiMoney size={45}/>
-            <Link href="/map">Pay</Link>
+        <div className={styles.ctaContainer}>
+          <div className={styles.balanceContainer}>
+            Balance: 
           </div>
-          <div className={styles.largeButton}>
-            <BiMoneyWithdraw size={45}/>
-            <Link href="/map">Withdraw</Link>
-          </div>
-          <div className={styles.largeButton}>
-            <BiSolidBank size={45}/>
-            <Link href="/map">Deposit</Link>
-          </div>
-          <div className={styles.largeButton}>
-            <BiTrophy size={45}/>
-            <Link href="/map">Rewards</Link>
+          <div className={styles.divider}/>
+          <div className={styles.buttonsContainer}>
+            <div className={styles.largeButton}>
+              <BiMoney size={45}/>
+              <Link href="/map">Pay</Link>
+            </div>
+            <div className={styles.largeButton}>
+              <BiMoneyWithdraw size={45}/>
+              <Link href="/map">Withdraw</Link>
+            </div>
+            <div className={styles.largeButton}>
+              <BiSolidBank size={45}/>
+              <Link href="/map">Deposit</Link>
+            </div>
+            <div className={styles.largeButton}>
+              <BiTrophy size={45}/>
+              <Link href="/map">Rewards</Link>
+            </div>
           </div>
         </div>
         <div className={styles.transactionsContainer}>

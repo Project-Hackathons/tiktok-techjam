@@ -20,6 +20,8 @@
 
 .buttonsContainer {
   margin-top: -2.5vh;
+  padding: 10px;
+  background-color: var(--color-white);
   display: flex;
 }
 

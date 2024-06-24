@@ -23,10 +23,16 @@ export default function Home() {
         </div>
         <div className={styles.buttonsContainer}>
           <div className={styles.largeButton}>
-            <Link href="/map">Withdraw / Deposit</Link>
+            <Link href="/map">Pay</Link>
           </div>
           <div className={styles.largeButton}>
-            <Link href="/map">Pay</Link>
+            <Link href="/map">Withdraw</Link>
+          </div>
+          <div className={styles.largeButton}>
+            <Link href="/map">Deposit</Link>
+          </div>
+          <div className={styles.largeButton}>
+            <Link href="/map">Rewards</Link>
           </div>
         </div>
         <div className={styles.transactionsContainer}>

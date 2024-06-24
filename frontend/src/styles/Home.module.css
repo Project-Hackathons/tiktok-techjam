@@ -24,7 +24,7 @@
 }
 
 .largeButton {
-  display: inherit;
+  display: flex;
   font-size: 1.4rem;
   padding: 1rem;
   background-color: var(--color-teal);

@@ -4,6 +4,11 @@ import Link from 'next/link'
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 
+import { BiMoney } from "react-icons/bi";
+import { BiMoneyWithdraw } from "react-icons/bi";
+import { BiSolidBank } from "react-icons/bi";
+import { BiTrophy } from "react-icons/bi";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
@@ -23,15 +28,19 @@ export default function Home() {
         </div>
         <div className={styles.buttonsContainer}>
           <div className={styles.largeButton}>
+            <BiMoney size={45}/>
             <Link href="/map">Pay</Link>
           </div>
           <div className={styles.largeButton}>
+            <BiMoneyWithdraw size={45}/>
             <Link href="/map">Withdraw</Link>
           </div>
           <div className={styles.largeButton}>
+            <BiSolidBank size={45}/>
             <Link href="/map">Deposit</Link>
           </div>
           <div className={styles.largeButton}>
+            <BiTrophy size={45}/>
             <Link href="/map">Rewards</Link>
           </div>
         </div>

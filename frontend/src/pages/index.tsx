@@ -4,10 +4,7 @@ import Link from 'next/link'
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 
-import { BiMoney } from "react-icons/bi";
-import { BiMoneyWithdraw } from "react-icons/bi";
-import { BiSolidBank } from "react-icons/bi";
-import { BiTrophy } from "react-icons/bi";
+import { BiMoney, BiMoneyWithdraw, BiSolidBank, BiTrophy } from "react-icons/bi";
 
 const inter = Inter({ subsets: ["latin"] });
 

@@ -1,4 +1,10 @@
 :root {
+  /* Color variables */
+  --color-black: #010101;
+  --color-teal: #69C9D0;
+  --color-white: #FFFFFF;
+  --color-red: #EE1D52;
+
   --max-width: 1100px;
   --border-radius: 12px;
   --font-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",

@@ -6,12 +6,6 @@ import styles from "@/styles/Home.module.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-// temp colors reference:
-// black: #010101
-// teal: #69C9D0
-// white: #FFFFFF
-// red: #EE1D52
-
 export default function Home() {
   return (
     <>
@@ -22,7 +16,22 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
-        <Link href="/map">Withdraw / Deposit</Link>
+        <div className={styles.headingContainer}>
+          <div className={styles.heading}>
+            Good Morning, <b>Joseph</b>!
+          </div>
+        </div>
+        <div className={styles.buttonsContainer}>
+          <div className={styles.largeButton}>
+            <Link href="/map">Withdraw / Deposit</Link>
+          </div>
+          <div className={styles.largeButton}>
+            <Link href="/map">Pay</Link>
+          </div>
+        </div>
+        <div className={styles.transactionsContainer}>
+          this area is for transactions
+        </div>
       </main>
     </>
   );

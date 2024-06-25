@@ -29,7 +29,7 @@ export default function Home() {
           </div>
           <div className={styles.divider}/>
           <div className={styles.buttonsContainer}>
-            <Link href="/map">
+            <Link href="/pay">
               <div className={styles.largeButton}>
                 <BiMoney size={45}/>
                 Pay

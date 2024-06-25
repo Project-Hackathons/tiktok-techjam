@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from 'next/link'
 
@@ -9,6 +10,20 @@ import { BiMoney, BiMoneyWithdraw, BiSolidBank, BiTrophy } from "react-icons/bi"
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const [userData, setUserData] = useState(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch('http://152.42.182.247:5000/user/1');
+      if (!response.ok) {
+        throw new Error('Fetching Error');
+      }
+      const data = await response.json();
+      setUserData(data);
+    };
+    fetchData();
+  }, []);
+
   return (
     <>
       <Head>

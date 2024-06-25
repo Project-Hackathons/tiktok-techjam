@@ -6,6 +6,7 @@ import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 
 import { BiMoney, BiMoneyWithdraw, BiSolidBank, BiTrophy } from "react-icons/bi";
+import { HiOutlineChevronRight } from "react-icons/hi2";
 
 interface User {
   uid: string;
@@ -106,7 +107,7 @@ export default function Home() {
               </div>
             </div>
             <div className={styles.valueContainer}>
-              $100
+              $100 <HiOutlineChevronRight size={32}/>
             </div>
           </div>
         </div>

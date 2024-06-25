@@ -7,19 +7,80 @@ import styles from "@/styles/Home.module.css";
 
 import { BiMoney, BiMoneyWithdraw, BiSolidBank, BiTrophy } from "react-icons/bi";
 
+interface User {
+  uid: string;
+  balance: number;
+  display_name: string;
+  email: string;
+  username: string;
+  transactions: Transaction[];
+}
+
+interface Transaction {
+  tid: number;
+  fee: number;
+  from: TransactionDetail;
+  to: TransactionDetail;
+}
+
+interface TransactionDetail {
+  uid: number;
+  balance_before: number;
+  balance_after: number;
+}
+
+const tempData = {
+  "balance": 100,
+  "display_name": "Cody the Codfish",
+  "email": "cody@gmail.com",
+  "transactions": [
+    {
+      "fee": 1,
+      "from": {
+        "balance_after": 100,
+        "balance_before": 150,
+        "uid": 1
+      },
+      "tid": 1,
+      "to": {
+        "balance_after": 249,
+        "balance_before": 200,
+        "uid": 5
+      }
+    },
+    {
+      "fee": 0,
+      "from": {
+        "balance_after": 10,
+        "balance_before": 110,
+        "uid": 2
+      },
+      "tid": 2,
+      "to": {
+        "balance_after": 300,
+        "balance_before": 200,
+        "uid": 1
+      }
+    }
+  ],
+  "uid": "1",
+  "username": "cody"
+}
+
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  const [userData, setUserData] = useState(null)
+  const [userData, setUserData] = useState<User | null>(null);
 
   useEffect(() => {
     (async () => {
-      const response = await fetch('http://152.42.182.247:5000/user/1');
-      if (!response.ok) {
-        throw new Error('Fetching Error');
-      }
-      const data = await response.json();
-      setUserData(data);
+      // const response = await fetch('http://152.42.182.247:5000/user/1');
+      // if (!response.ok) {
+      //   throw new Error('Fetching Error');
+      // }
+      // const data = await response.json();
+      // setUserData(data);
+      setUserData(tempData)
     })()
   }, []);
 

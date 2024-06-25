@@ -47,7 +47,7 @@ export default function Home() {
                 Deposit
               </div>
             </Link>
-            <Link href="/map">
+            <Link href="/">
               <div className={styles.largeButton}>
                 <BiTrophy size={45}/>
                 Rewards

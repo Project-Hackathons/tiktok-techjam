@@ -29,44 +29,6 @@ interface TransactionDetail {
   balance_after: number;
 }
 
-const tempData = {
-  "balance": 100,
-  "display_name": "Cody the Codfish",
-  "email": "cody@gmail.com",
-  "transactions": [
-    {
-      "fee": 1,
-      "from": {
-        "balance_after": 100,
-        "balance_before": 150,
-        "uid": 1
-      },
-      "tid": 1,
-      "to": {
-        "balance_after": 249,
-        "balance_before": 200,
-        "uid": 5
-      }
-    },
-    {
-      "fee": 0,
-      "from": {
-        "balance_after": 10,
-        "balance_before": 110,
-        "uid": 2
-      },
-      "tid": 2,
-      "to": {
-        "balance_after": 300,
-        "balance_before": 200,
-        "uid": 1
-      }
-    }
-  ],
-  "uid": "1",
-  "username": "cody"
-}
-
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
@@ -74,13 +36,12 @@ export default function Home() {
 
   useEffect(() => {
     (async () => {
-      // const response = await fetch('http://152.42.182.247:5000/user/1');
-      // if (!response.ok) {
-      //   throw new Error('Fetching Error');
-      // }
-      // const data = await response.json();
-      // setUserData(data);
-      setUserData(tempData)
+      const response = await fetch('http://152.42.182.247:5000/user/1');
+      if (!response.ok) {
+        throw new Error('Fetching Error');
+      }
+      const data = await response.json();
+      setUserData(data);
     })()
   }, []);
 

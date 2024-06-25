@@ -24,6 +24,10 @@ export default function Home() {
     fetchData();
   }, []);
 
+  if (userData === null) {
+    return <div>Loading...</div>; // TODO: add design for loading screen
+  }
+
   return (
     <>
       <Head>

@@ -97,19 +97,23 @@ export default function Home() {
           </div>
         </div>
         <div className={styles.transactionsContainer}>
-          <div className={styles.transactionItem}>
-            <div className={styles.detailsContainer}>
-              <div className={styles.transactionTitle}>
-                FROM UID1
+          {userData.transactions.map(()=>{
+            return (
+              <div className={styles.transactionItem}>
+                <div className={styles.detailsContainer}>
+                  <div className={styles.transactionTitle}>
+                    FROM UID1
+                  </div>
+                  <div className={styles.transactionDetail}>
+                    TO UID2
+                  </div>
+                </div>
+                <div className={styles.valueContainer}>
+                  $100 <HiOutlineChevronRight size={32}/>
+                </div>
               </div>
-              <div className={styles.transactionDetail}>
-                TO UID2
-              </div>
-            </div>
-            <div className={styles.valueContainer}>
-              $100 <HiOutlineChevronRight size={32}/>
-            </div>
-          </div>
+            )
+          })}
         </div>
       </main>
     </>

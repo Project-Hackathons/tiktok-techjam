@@ -60,12 +60,12 @@ export default function Home() {
       <main className={`${styles.main} ${inter.className}`}>
         <div className={styles.headingContainer}>
           <div className={styles.heading}>
-            Good Morning, <b>Joseph</b>!
+            Good Morning, <b>{userData.display_name}</b>!
           </div>
         </div>
         <div className={styles.ctaContainer}>
           <div className={styles.balanceContainer}>
-            Balance: 
+            Balance: ${userData.balance}
           </div>
           <div className={styles.divider}/>
           <div className={styles.buttonsContainer}>

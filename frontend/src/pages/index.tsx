@@ -97,19 +97,19 @@ export default function Home() {
           </div>
         </div>
         <div className={styles.transactionsContainer}>
-          {userData.transactions.map(()=>{
+          {userData.transactions.map((txn)=>{
             return (
               <div className={styles.transactionItem}>
                 <div className={styles.detailsContainer}>
                   <div className={styles.transactionTitle}>
-                    FROM UID1
+                    FROM UID{txn.from.uid}
                   </div>
                   <div className={styles.transactionDetail}>
-                    TO UID2
+                    TO UID{txn.to.uid}
                   </div>
                 </div>
                 <div className={styles.valueContainer}>
-                  $100 <HiOutlineChevronRight size={32}/>
+                  {txn.from.balance_before - txn.from.balance_after} <HiOutlineChevronRight size={32}/>
                 </div>
               </div>
             )

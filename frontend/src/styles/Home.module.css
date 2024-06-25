@@ -29,7 +29,21 @@
 }
 
 .balanceContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   color: var(--color-black);
+}
+
+.balanceTitle {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.balanceAmount {
+  font-size: 22px;
+  font-weight: 700;
 }
 
 .divider {
@@ -38,8 +52,9 @@
 
 .buttonsContainer {
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   gap: 10px;
-  background-color: var(--color-white);
   border-radius: var(--border-radius);
 }
 

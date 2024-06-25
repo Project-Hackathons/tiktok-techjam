@@ -66,7 +66,12 @@ export default function Home() {
         </div>
         <div className={styles.ctaContainer}>
           <div className={styles.balanceContainer}>
-            Balance: ${userData.balance}
+            <div className={styles.balanceTitle}>
+              Balance: 
+            </div>
+            <div className={styles.balanceAmount}>
+              SGD ${userData.balance}.00
+            </div>
           </div>
           <div className={styles.divider}/>
           <div className={styles.buttonsContainer}>

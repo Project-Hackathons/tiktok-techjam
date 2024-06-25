@@ -29,22 +29,30 @@ export default function Home() {
           </div>
           <div className={styles.divider}/>
           <div className={styles.buttonsContainer}>
-            <div className={styles.largeButton}>
-              <BiMoney size={45}/>
-              <Link href="/map">Pay</Link>
-            </div>
-            <div className={styles.largeButton}>
-              <BiMoneyWithdraw size={45}/>
-              <Link href="/map">Withdraw</Link>
-            </div>
-            <div className={styles.largeButton}>
-              <BiSolidBank size={45}/>
-              <Link href="/map">Deposit</Link>
-            </div>
-            <div className={styles.largeButton}>
-              <BiTrophy size={45}/>
-              <Link href="/map">Rewards</Link>
-            </div>
+            <Link href="/map">
+              <div className={styles.largeButton}>
+                <BiMoney size={45}/>
+                Pay
+              </div>
+            </Link>
+            <Link href="/map">
+              <div className={styles.largeButton}>
+                <BiMoneyWithdraw size={45}/>
+                Withdraw
+              </div>
+            </Link>
+            <Link href="/map">
+              <div className={styles.largeButton}>
+                <BiSolidBank size={45}/>
+                Deposit
+              </div>
+            </Link>
+            <Link href="/map">
+              <div className={styles.largeButton}>
+                <BiTrophy size={45}/>
+                Rewards
+              </div>
+            </Link>
           </div>
         </div>
         <div className={styles.transactionsContainer}>

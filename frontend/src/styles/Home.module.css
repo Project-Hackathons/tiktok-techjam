@@ -56,4 +56,39 @@
 
 .transactionsContainer {
   display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  margin-top: 40px;
+  padding: 20px;
+}
+
+.transactionItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-radius: var(--border-radius);
+  background-color: rgba(255,255,255,0.08);
+}
+
+.detailsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.transactionTitle {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.transactionDetail {
+  font-size: 14px;
+}
+
+.valueContainer {
+  font-size: 16px;
+  font-weight: 700;
 }

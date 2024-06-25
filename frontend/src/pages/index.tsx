@@ -96,7 +96,19 @@ export default function Home() {
           </div>
         </div>
         <div className={styles.transactionsContainer}>
-          this area is for transactions
+          <div className={styles.transactionItem}>
+            <div className={styles.detailsContainer}>
+              <div className={styles.transactionTitle}>
+                FROM UID1
+              </div>
+              <div className={styles.transactionDetail}>
+                TO UID2
+              </div>
+            </div>
+            <div className={styles.valueContainer}>
+              $100
+            </div>
+          </div>
         </div>
       </main>
     </>

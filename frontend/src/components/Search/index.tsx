@@ -10,9 +10,9 @@ import {
 } from "@chakra-ui/react";
 import { Search2Icon, SmallCloseIcon } from "@chakra-ui/icons";
 import type { LatLngTuple } from "leaflet";
+import axios from "axios";
 
 import type { PlaceData } from "@googlemaps/google-maps-services-js";
-import { Client } from "@googlemaps/google-maps-services-js";
 
 const SearchComponent = ({
   flyToLocation,
@@ -23,21 +23,9 @@ const SearchComponent = ({
   const [searchResults, setSearchResults] = useState<Partial<PlaceData>[]>([]);
   const [showSearchResults, setShowSearchResults] = useState(true);
 
-  const client = new Client({});
-  const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? "";
-  if (!GOOGLE_MAPS_API_KEY) {
-    console.log("No gmaps API key, please set it");
-  }
   const fetchGoogleMapResults = async () => {
-    const response = await client.textSearch({
-      params: {
-        query: searchedLocation,
-        key: GOOGLE_MAPS_API_KEY,
-        region: "sg",
-      },
-      timeout: 1000,
-    });
-    return response.data.results;
+    const response = await axios.post("/api/search", { query: searchedLocation });
+    return response.data
   };
 
   const resetSearch = ({ clearBar = true }: { clearBar?: boolean }) => {
@@ -55,11 +43,10 @@ const SearchComponent = ({
   const handleSearch = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const result = await fetchGoogleMapResults()
+      const result = await fetchGoogleMapResults();
       setSearchResults(result);
       setShowSearchResults(true);
       console.log(result);
-      //todo @euan idk how to fix this error gdi
     } catch (error) {
       setSearchResults([]);
       console.error("Search failed:", error);

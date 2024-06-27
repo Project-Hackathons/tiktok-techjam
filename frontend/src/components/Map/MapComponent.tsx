@@ -103,7 +103,7 @@ const MapComponent = () => {
               size="lg"
               boxShadow="lg"
               onClick={() => flyToLocation(homePosition)}
-              mr="3rem"
+              mr="2rem"
               bg="#69C9D0"
             >
               <FaCompass color="white"/>

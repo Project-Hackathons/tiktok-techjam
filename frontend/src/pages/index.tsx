@@ -4,31 +4,10 @@ import Link from 'next/link'
 
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
+import { User } from "../../types/index";
 
 import { BiMoney, BiMoneyWithdraw, BiSolidBank, BiTrophy } from "react-icons/bi";
 import { HiOutlineChevronRight } from "react-icons/hi2";
-
-interface User {
-  uid: string;
-  balance: number;
-  display_name: string;
-  email: string;
-  username: string;
-  transactions: Transaction[];
-}
-
-interface Transaction {
-  tid: number;
-  fee: number;
-  from: TransactionDetail;
-  to: TransactionDetail;
-}
-
-interface TransactionDetail {
-  uid: number;
-  balance_before: number;
-  balance_after: number;
-}
 
 const inter = Inter({ subsets: ["latin"] });
 

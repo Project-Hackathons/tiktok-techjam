@@ -95,34 +95,18 @@ const MapComponent = () => {
             bottom="50"
             zIndex={99}
             w="100vw"
-            justifyContent="center"
+            justifyContent="end"
           >
-            <Flex
-              flexDir="column"
-              justifyContent="space-between"
-              alignItems="center"
+            <Button
+              variant="solid"
+              colorScheme="red"
+              size="lg"
+              boxShadow="lg"
+              onClick={() => flyToLocation(homePosition)}
+              mr="1rem"
             >
-              <HStack spacing={3}>
-                <Button
-                  variant="solid"
-                  colorScheme="red"
-                  size="lg"
-                  boxShadow="lg"
-                  onClick={() => flyToLocation(homePosition)}
-                >
-                  Back to current location
-                </Button>
-                <Button
-                  variant="solid"
-                  colorScheme="red"
-                  size="lg"
-                  boxShadow="lg"
-                  onClick={() => flyToLocation([1.304833, 103.831833])}
-                >
-                  Random Location
-                </Button>
-              </HStack>
-            </Flex>
+              Back to current location
+            </Button>
           </Flex>
           <MapContainer
             center={currPosition}
@@ -137,7 +121,7 @@ const MapComponent = () => {
               url="https://www.onemap.gov.sg/maps/tiles/Grey/{z}/{x}/{y}.png"
             />
             <ShowMarkers />
-            <Marker position={currPosition}/>
+            <Marker position={currPosition} />
           </MapContainer>
         </Box>
       ) : (

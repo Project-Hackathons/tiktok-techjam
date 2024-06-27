@@ -45,7 +45,7 @@ const MemoizedMarker = memo(
           flexDirection="column"
           gap={0}
           height="18vh"
-          width="45vw"
+          width="20vw"
           
         >
           <VStack gap="0.25rem" justifyContent="start" alignItems="start" display="flex">
@@ -65,7 +65,8 @@ const MemoizedMarker = memo(
             onClick={() => getDirection(position)}
             alignSelf="end"
             size="sm"
-            colorScheme="blue"
+            bg="#69C9D0"
+            color="white"
             rightIcon={<ArrowForwardIcon />}
             mt="1rem"
           >

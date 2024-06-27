@@ -12,6 +12,7 @@ import { Search2Icon, SmallCloseIcon } from "@chakra-ui/icons";
 import type { LatLngTuple } from "leaflet";
 
 import type { PlaceData } from "@googlemaps/google-maps-services-js";
+import { Client } from "@googlemaps/google-maps-services-js";
 
 const SearchComponent = ({
   flyToLocation,
@@ -21,10 +22,24 @@ const SearchComponent = ({
   const [searchedLocation, setSearchedLocation] = useState("");
   const [searchResults, setSearchResults] = useState<Partial<PlaceData>[]>([]);
   const [showSearchResults, setShowSearchResults] = useState(true);
-  // const searchLocationQuery = api.search.getLocation.useQuery(
-  //   { locationQuery: searchedLocation },
-  //   { enabled: false }
-  // );
+
+  const client = new Client({});
+  const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? "";
+  if (!GOOGLE_MAPS_API_KEY) {
+    console.log("No gmaps API key, please set it");
+  }
+  const fetchGoogleMapResults = async () => {
+    const response = await client.textSearch({
+      params: {
+        query: searchedLocation,
+        key: GOOGLE_MAPS_API_KEY,
+        region: "sg",
+      },
+      timeout: 1000,
+    });
+    return response.data.results;
+  };
+
   const resetSearch = ({ clearBar = true }: { clearBar?: boolean }) => {
     setSearchResults([]);
     setShowSearchResults(false);
@@ -37,19 +52,19 @@ const SearchComponent = ({
     resetSearch({ clearBar: false });
   }, [searchedLocation]);
 
-  // const handleSearch = async (event: React.FormEvent) => {
-  //   event.preventDefault();
-  //   try {
-  //     const result = await searchLocationQuery.refetch();
-  //     setSearchResults(result.data);
-  //     setShowSearchResults(true);
-  //     console.log(result.data);
-  //     //todo @euan idk how to fix this error gdi
-  //   } catch (error) {
-  //     setSearchResults([]);
-  //     console.error("Search failed:", error);
-  //   }
-  // };
+  const handleSearch = async (event: React.FormEvent) => {
+    event.preventDefault();
+    try {
+      const result = await fetchGoogleMapResults()
+      setSearchResults(result);
+      setShowSearchResults(true);
+      console.log(result);
+      //todo @euan idk how to fix this error gdi
+    } catch (error) {
+      setSearchResults([]);
+      console.error("Search failed:", error);
+    }
+  };
 
   const handleSelect = (location: { lat: number; lng: number }) => {
     resetSearch({});

@@ -8,6 +8,7 @@ import styles from "./Map.module.css";
 import { useEffect, useRef, useState } from "react";
 import ShowMarkers from "./ShowMarkers";
 import Search from "../Search";
+import { FaCompass } from "react-icons/fa";
 
 const MapComponent = () => {
   // INITIALIZING MAP
@@ -99,13 +100,13 @@ const MapComponent = () => {
           >
             <Button
               variant="solid"
-              colorScheme="red"
               size="lg"
               boxShadow="lg"
               onClick={() => flyToLocation(homePosition)}
-              mr="1rem"
+              mr="3rem"
+              bg="#69C9D0"
             >
-              Back to current location
+              <FaCompass color="white"/>
             </Button>
           </Flex>
           <MapContainer

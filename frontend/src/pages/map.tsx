@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { Box, Text } from "@chakra-ui/react";
+import Map from "@/components/Map";
 
 export default function MapPage() {
   return (
@@ -10,9 +11,7 @@ export default function MapPage() {
         {/* <meta name="viewport" content="width=device-width, initial-scale=1" /> */}
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Box h="100vh" w="100vw">
-        <Text>Hello</Text>
-      </Box>
+      <Map/>
     </>
   );
 }

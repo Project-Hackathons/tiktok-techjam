@@ -89,7 +89,7 @@ const SearchComponent = ({
           </Box>
           <Input
             w="100%"
-            placeholder="Search for a different location"
+            placeholder="Set your starting location"
             variant="outline"
             bg="white"
             borderRadius="0.5rem"

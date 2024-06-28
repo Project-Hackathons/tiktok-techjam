@@ -1,6 +1,6 @@
 import { MapContainer, Marker, TileLayer, Popup } from "react-leaflet";
 import type { LatLngTuple, Map } from "leaflet";
-import { Box, Button, Flex, HStack, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, HStack, Text, VStack } from "@chakra-ui/react";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css"; // Re-uses images from ~leaflet package
 import "leaflet-defaulticon-compatibility";
@@ -9,6 +9,9 @@ import { useEffect, useRef, useState } from "react";
 import ShowMarkers from "./ShowMarkers";
 import Search from "../Search";
 import { FaCompass } from "react-icons/fa";
+import { CgProfile } from "react-icons/cg";
+import Router from "next/router";
+import { BiMoney, BiTrophy } from "react-icons/bi";
 
 const MapComponent = () => {
   // INITIALIZING MAP
@@ -84,6 +87,44 @@ const MapComponent = () => {
         <Box w="100vw" h="100vh" overflow="hidden">
           <Flex
             position="fixed"
+            left="0"
+            zIndex={99}
+            justifyContent="center"
+            display={{ base: "none", md: "block" }}
+          >
+            <Flex bg="white" h="100vh" w="4rem" shadow="xl" alignItems="center" flexDirection="column">
+              <Flex mt="1rem" justifyContent="center" alignItems="center" h="3rem" w="3rem" cursor="pointer"  _hover={{bg:"gray.200"}} onClick={()=>{Router.push("/")}} borderRadius="0.5rem">
+                <CgProfile size="2rem" color="grey"/>
+              </Flex>
+              <Flex mt="1rem" justifyContent="center" alignItems="center" h="3rem" w="3rem" cursor="pointer"  _hover={{bg:"gray.200"}} onClick={()=>{Router.push("/pay")}} borderRadius="0.5rem">
+                <BiMoney size="2rem" color="grey"/>
+              </Flex>
+              <Flex mt="1rem" justifyContent="center" alignItems="center" h="3rem" w="3rem" cursor="pointer"  _hover={{bg:"gray.200"}} onClick={()=>{Router.push("/rewards")}} borderRadius="0.5rem">
+                <BiTrophy size="2rem" color="grey"/>
+              </Flex>
+            </Flex>
+          </Flex>
+          <Flex
+            position="fixed"
+            bottom="0"
+            zIndex={99}
+            justifyContent="center"
+            display={{ base: "block", md: "none" }}
+          >
+            <Flex bg="white" h="4rem" w="100vw" shadow="xl" alignItems="center" justifyContent="center">
+              <Flex mx="1rem" justifyContent="center" alignItems="center" h="3rem" w="3rem" cursor="pointer"  _hover={{bg:"gray.200"}} onClick={()=>{Router.push("/")}} borderRadius="0.5rem">
+                <CgProfile size="2.5rem" color="grey"/>
+              </Flex>
+              <Flex mx="1rem" justifyContent="center" alignItems="center" h="3rem" w="3rem" cursor="pointer"  _hover={{bg:"gray.200"}} onClick={()=>{Router.push("/pay")}} borderRadius="0.5rem">
+                <BiMoney size="2.5rem" color="grey"/>
+              </Flex>
+              <Flex mx="1rem" justifyContent="center" alignItems="center" h="3rem" w="3rem" cursor="pointer"  _hover={{bg:"gray.200"}} onClick={()=>{Router.push("/rewards")}} borderRadius="0.5rem">
+                <BiTrophy size="2.5rem" color="grey"/>
+              </Flex>
+            </Flex>
+          </Flex>
+          <Flex
+            position="fixed"
             top="50"
             zIndex={99}
             w="100vw"
@@ -93,7 +134,7 @@ const MapComponent = () => {
           </Flex>
           <Flex
             position="fixed"
-            bottom="50"
+            bottom={{base:"5rem", md:"50"}}
             zIndex={99}
             w="100vw"
             justifyContent="end"
@@ -106,7 +147,7 @@ const MapComponent = () => {
               mr="2rem"
               bg="#69C9D0"
             >
-              <FaCompass color="white"/>
+              <FaCompass color="white" />
             </Button>
           </Flex>
           <MapContainer

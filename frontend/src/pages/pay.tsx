@@ -1,12 +1,16 @@
 import Head from "next/head";
 import { Inter } from "next/font/google";
 import styles from "@/styles/Pay.module.css";
+import { useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const [user, setUser] = useState("");
+  const [amount, setAmount] = useState("");
+
   const handleConfirmTransaction = () => {
-    console.log("done");
+    console.log(user, amount);
   };
 
   return (
@@ -35,6 +39,8 @@ export default function Home() {
               type="text"
               id="userInput"
               className={styles.transactionInput}
+              value={user}
+              onChange={(e) => setUser(e.target.value)}
             />
           </div>
           <div className={styles.formItemContainer}>
@@ -43,6 +49,8 @@ export default function Home() {
               type="text"
               id="amountInput"
               className={styles.transactionInput}
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
             />
           </div>
           <div

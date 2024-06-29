@@ -2,15 +2,39 @@ import Head from "next/head";
 import { Inter } from "next/font/google";
 import styles from "@/styles/Pay.module.css";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [user, setUser] = useState("");
   const [amount, setAmount] = useState("");
+  const router = useRouter();
 
   const handleConfirmTransaction = () => {
-    console.log(user, amount);
+    const accessToken = "<access_token>"; // TODO: replace with access token (from cookies?)
+    const data = {
+      from: "OWNSELF ID",
+      to: user, // TODO: add function to replace username with userid
+      amount: parseFloat(amount),
+    };
+
+    fetch("http://152.42.182.247:5000/transfer", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then(() => {
+        // TODO: validate POST req success
+        router.push("/transaction_success");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   return (

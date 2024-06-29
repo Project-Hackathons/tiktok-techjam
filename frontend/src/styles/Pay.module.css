@@ -1,0 +1,49 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--color-black);
+  padding: 6vh 10vw;
+  gap: 30px;
+}
+
+.headingContainer {
+  width: 100%;
+  color: var(--color-white);
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.balanceContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px;
+  gap: 40px;
+  border-radius: var(--border-radius);
+  background-color: var(--color-white);
+}
+
+.transferableTitleContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.transferableTitle {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.transferableDesc {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.transferableValue {
+  font-size: 24px;
+  font-weight: 700;
+}

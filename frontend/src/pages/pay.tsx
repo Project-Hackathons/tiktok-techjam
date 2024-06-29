@@ -14,10 +14,16 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
-        <div className={styles.description}>
-          <p>
-            PAY FRIENDS&nbsp;
-          </p>
+        <div className={styles.headingContainer}> Outgoing Transfer</div>
+        <div className={styles.balanceContainer}>
+          <div className={styles.transferableTitleContainer}>
+            <div className={styles.transferableTitle}>Transferable balance</div>
+            <div className={styles.transferableDesc}>
+              This is the amount you can <br />
+              transfer to others.
+            </div>
+          </div>
+          <div className={styles.transferableValue}>$10</div>
         </div>
       </main>
     </>

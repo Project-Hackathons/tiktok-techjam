@@ -47,3 +47,17 @@
   font-size: 24px;
   font-weight: 700;
 }
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+}
+
+.transactionInput {
+  font-size: 20px;
+}
+
+.transactionBtn {
+  background-color: var(--color-red);
+}

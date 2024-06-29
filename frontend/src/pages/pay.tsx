@@ -5,6 +5,10 @@ import styles from "@/styles/Pay.module.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const handleConfirmTransaction = () => {
+    console.log("done");
+  };
+
   return (
     <>
       <Head>
@@ -24,6 +28,15 @@ export default function Home() {
             </div>
           </div>
           <div className={styles.transferableValue}>$10</div>
+        </div>
+        <div className={styles.formContainer}>
+          <input type="text" className={styles.transactionInput} />
+          <div
+            className={styles.transactionBtn}
+            onClick={handleConfirmTransaction}
+          >
+            Confirm
+          </div>
         </div>
       </main>
     </>

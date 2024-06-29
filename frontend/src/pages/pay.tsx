@@ -27,10 +27,25 @@ export default function Home() {
               transfer to others.
             </div>
           </div>
-          <div className={styles.transferableValue}>$10</div>
+          <div className={styles.transferableValue}>$100</div>
         </div>
         <div className={styles.formContainer}>
-          <input type="text" className={styles.transactionInput} />
+          <div className={styles.formItemContainer}>
+            <label htmlFor="userInput">User</label>
+            <input
+              type="text"
+              id="userInput"
+              className={styles.transactionInput}
+            />
+          </div>
+          <div className={styles.formItemContainer}>
+            <label htmlFor="amountInput">Amount</label>
+            <input
+              type="text"
+              id="amountInput"
+              className={styles.transactionInput}
+            />
+          </div>
           <div
             className={styles.transactionBtn}
             onClick={handleConfirmTransaction}

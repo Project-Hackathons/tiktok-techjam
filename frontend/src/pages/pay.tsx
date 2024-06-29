@@ -23,8 +23,7 @@ export default function Home() {
           <div className={styles.transferableTitleContainer}>
             <div className={styles.transferableTitle}>Transferable balance</div>
             <div className={styles.transferableDesc}>
-              This is the amount you can <br />
-              transfer to others.
+              You cannot transfer refunds.
             </div>
           </div>
           <div className={styles.transferableValue}>$100</div>

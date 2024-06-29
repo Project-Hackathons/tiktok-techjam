@@ -6,6 +6,7 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightElement,
+  Spinner,
   Text,
 } from "@chakra-ui/react";
 import { Search2Icon, SmallCloseIcon } from "@chakra-ui/icons";
@@ -22,6 +23,7 @@ const SearchComponent = ({
   const [searchedLocation, setSearchedLocation] = useState("");
   const [searchResults, setSearchResults] = useState<Partial<PlaceData>[]>([]);
   const [showSearchResults, setShowSearchResults] = useState(true);
+  const [isSearching, setIsSearching] = useState(false)
 
   const fetchGoogleMapResults = async () => {
     const response = await axios.post("/api/search", { query: searchedLocation });
@@ -43,6 +45,7 @@ const SearchComponent = ({
   const handleSearch = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
+      setIsSearching(true)
       const result = await fetchGoogleMapResults();
       setSearchResults(result);
       setShowSearchResults(true);
@@ -51,6 +54,7 @@ const SearchComponent = ({
       setSearchResults([]);
       console.error("Search failed:", error);
     }
+    setIsSearching(false)
   };
 
   const handleSelect = (location: { lat: number; lng: number }) => {
@@ -71,7 +75,7 @@ const SearchComponent = ({
           </InputLeftElement>
           <Box cursor="pointer" onClick={() => resetSearch({})}>
             <InputRightElement onClick={() => resetSearch({})}>
-              <SmallCloseIcon />
+              {isSearching? <Spinner size='sm'/> : <SmallCloseIcon /> }
             </InputRightElement>
           </Box>
           <Input

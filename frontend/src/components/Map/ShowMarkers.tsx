@@ -10,7 +10,7 @@ import * as L from "leaflet";
 import { Flex, Text, Button, VStack } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 
-import axios from 'axios'
+import axios from "axios";
 
 interface Store {
   address: string;
@@ -48,20 +48,29 @@ const MemoizedMarker = memo(
           gap={0}
           height="8rem"
           width="12rem"
-          
         >
-          <VStack gap="0.25rem" justifyContent="start" alignItems="start" display="flex">
-          <Text  as="span" noOfLines={1} fontSize="sm" fontWeight="semibold">
-            {store.name}
-          </Text>
-          <Text  as="span" noOfLines={1} fontSize="sm" color="grey">
-            {store.address}
-          </Text>
-          <Text  as="span" noOfLines={1} fontSize="sm" color="grey">
-            (Withdrawal up to $500)
-          </Text>
+          <VStack
+            gap="0.25rem"
+            justifyContent="start"
+            alignItems="start"
+            display="flex"
+          >
+            <Text as="span" noOfLines={1} fontSize="sm" fontWeight="semibold">
+              {store.name}
+            </Text>
+            <Text as="span" noOfLines={1} fontSize="sm" color="grey">
+              {store.address}
+            </Text>
+            {store.withdrawal == 0 ? (
+              <Text as="span" noOfLines={1} fontSize="sm" color="grey">
+                (Withdrawal unavailable)
+              </Text>
+            ) : (
+              <Text as="span" noOfLines={1} fontSize="sm" color="grey">
+                (Withdrawal up to ${store.withdrawal})
+              </Text>
+            )}
           </VStack>
-   
 
           <Button
             onClick={() => getDirection(position)}
@@ -87,12 +96,12 @@ const ShowMarkers = () => {
   const [stores, setStores] = useState<Store[]>([]);
   const fetchStores = async () => {
     try {
-      const response = await axios.get('http://152.42.182.247:5000/stores');
+      const response = await axios.get("http://152.42.182.247:5000/stores");
       const stores = response.data;
-      setStores(stores)
+      setStores(stores);
       return stores; // You can return the stores or handle them as needed
     } catch (error) {
-      console.error('Error fetching stores:', error);
+      console.error("Error fetching stores:", error);
     }
     //   {
     //     address: "Singapore 467360",

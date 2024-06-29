@@ -74,11 +74,19 @@ export default function Home() {
               id="amountInput"
               className={styles.transactionInput}
               value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              onChange={(e) => {
+                const inputAmount = e.target.value;
+                const regex = /^\d*\.?\d{0,2}$/;
+                if (regex.test(inputAmount) || inputAmount === "") {
+                  setAmount(inputAmount);
+                }
+              }}
             />
           </div>
           <div
-            className={styles.transactionBtn}
+            className={`${styles.transactionBtn} ${
+              user === "" || amount === "" ? styles.disabled : ""
+            }`}
             onClick={handleConfirmTransaction}
           >
             Confirm

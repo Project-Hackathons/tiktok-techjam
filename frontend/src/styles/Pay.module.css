@@ -87,3 +87,8 @@
   padding: 10px;
   color: var(--color-white);
 }
+
+.transactionBtn.disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}

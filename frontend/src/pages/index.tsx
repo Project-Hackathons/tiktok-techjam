@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
-import Link from 'next/link'
+import Link from "next/link";
 
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import { User } from "../../types/index";
 
-import { BiMoney, BiMoneyWithdraw, BiSolidBank, BiTrophy } from "react-icons/bi";
+import {
+  BiMoney,
+  BiMoneyWithdraw,
+  BiSolidBank,
+  BiTrophy,
+} from "react-icons/bi";
 import { HiOutlineChevronRight } from "react-icons/hi2";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -16,13 +21,13 @@ export default function Home() {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch('http://152.42.182.247:5000/user/1');
+      const response = await fetch("http://152.42.182.247:5000/user/1");
       if (!response.ok) {
-        throw new Error('Fetching Error');
+        throw new Error("Fetching Error");
       }
       const data = await response.json();
       setUserData(data);
-    })()
+    })();
   }, []);
 
   if (userData === null) {
@@ -45,43 +50,41 @@ export default function Home() {
         </div>
         <div className={styles.ctaContainer}>
           <div className={styles.balanceContainer}>
-            <div className={styles.balanceTitle}>
-              Balance: 
-            </div>
+            <div className={styles.balanceTitle}>Balance:</div>
             <div className={styles.balanceAmount}>
               SGD ${userData.balance}.00
             </div>
           </div>
-          <div className={styles.divider}/>
+          <div className={styles.divider} />
           <div className={styles.buttonsContainer}>
             <Link href="/pay">
               <div className={styles.largeButton}>
-                <BiMoney size={45}/>
+                <BiMoney size={45} />
                 Pay
               </div>
             </Link>
             <Link href="/map">
               <div className={styles.largeButton}>
-                <BiMoneyWithdraw size={45}/>
+                <BiMoneyWithdraw size={45} />
                 Withdraw
               </div>
             </Link>
             <Link href="/map">
               <div className={styles.largeButton}>
-                <BiSolidBank size={45}/>
+                <BiSolidBank size={45} />
                 Deposit
               </div>
             </Link>
             <Link href="/">
               <div className={styles.largeButton}>
-                <BiTrophy size={45}/>
+                <BiTrophy size={45} />
                 Rewards
               </div>
             </Link>
           </div>
         </div>
         <div className={styles.transactionsContainer}>
-          {userData.transactions.map((txn)=>{
+          {userData.transactions.map((txn) => {
             return (
               <div className={styles.transactionItem}>
                 <div className={styles.detailsContainer}>
@@ -93,10 +96,11 @@ export default function Home() {
                   </div>
                 </div>
                 <div className={styles.valueContainer}>
-                  {txn.from.balance_before - txn.from.balance_after} <HiOutlineChevronRight size={32}/>
+                  {txn.from.balance_before - txn.from.balance_after}{" "}
+                  <HiOutlineChevronRight size={32} />
                 </div>
               </div>
-            )
+            );
           })}
         </div>
       </main>

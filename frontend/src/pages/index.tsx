@@ -96,7 +96,7 @@ export default function Home() {
                   </div>
                 </div>
                 <div className={styles.valueContainer}>
-                  {txn.from.balance_before - txn.from.balance_after}{" "}
+                  ${txn.from.balance_before - txn.from.balance_after}{" "}
                   <HiOutlineChevronRight size={32} />
                 </div>
               </div>

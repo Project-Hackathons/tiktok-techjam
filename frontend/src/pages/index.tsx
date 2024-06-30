@@ -84,9 +84,9 @@ export default function Home() {
           </div>
         </div>
         <div className={styles.transactionsContainer}>
-          {userData.transactions.map((txn) => {
+          {userData.transactions.map((txn, index) => {
             return (
-              <div className={styles.transactionItem}>
+              <div className={styles.transactionItem} key={index}>
                 <div className={styles.detailsContainer}>
                   <div className={styles.transactionTitle}>
                     FROM UID{txn.from.uid}

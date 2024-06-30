@@ -106,25 +106,6 @@ const MapComponent = () => {
           </Flex>
           <Flex
             position="fixed"
-            bottom="0"
-            zIndex={99}
-            justifyContent="center"
-            display={{ base: "block", md: "none" }}
-          >
-            <Flex bg="white" h="4rem" w="100vw" shadow="xl" alignItems="center" justifyContent="center">
-              <Flex mx="1rem" justifyContent="center" alignItems="center" h="3rem" w="3rem" cursor="pointer"  _hover={{bg:"gray.200"}} onClick={()=>{Router.push("/")}} borderRadius="0.5rem">
-                <CgProfile size="2.5rem" color="grey"/>
-              </Flex>
-              <Flex mx="1rem" justifyContent="center" alignItems="center" h="3rem" w="3rem" cursor="pointer"  _hover={{bg:"gray.200"}} onClick={()=>{Router.push("/pay")}} borderRadius="0.5rem">
-                <BiMoney size="2.5rem" color="grey"/>
-              </Flex>
-              <Flex mx="1rem" justifyContent="center" alignItems="center" h="3rem" w="3rem" cursor="pointer"  _hover={{bg:"gray.200"}} onClick={()=>{Router.push("/rewards")}} borderRadius="0.5rem">
-                <BiTrophy size="2.5rem" color="grey"/>
-              </Flex>
-            </Flex>
-          </Flex>
-          <Flex
-            position="fixed"
             top="50"
             zIndex={99}
             w="100vw"

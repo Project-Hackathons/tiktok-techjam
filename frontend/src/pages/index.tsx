@@ -20,8 +20,8 @@ const Home = () => {
   }, []);
   return (
     <Flex bg="#070F2B" h="100vh" w="100vw">
-      <VStack>
-        <Flex w="100vw" justifyContent="center" py="1rem">
+      <VStack gap="1.5rem">
+        <Flex w="100vw" justifyContent="center" pt="1.5rem">
           <Text
             textAlign="center"
             color="white"

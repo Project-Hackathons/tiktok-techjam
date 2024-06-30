@@ -1,55 +1,43 @@
-import { useEffect, useState } from "react";
+import { Divider, Flex, HStack, Text, VStack } from "@chakra-ui/react"
 
-import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
-import { User } from "../../../types";
-
-import { HiOutlineChevronRight } from "react-icons/hi2";
-
-const inter = Inter({ subsets: ["latin"] });
-
-export default function TransactionList() {
-  const [userData, setUserData] = useState<User | null>(null);
-
-  useEffect(() => {
-    (async () => {
-      const response = await fetch("http://152.42.182.247:5000/user/1");
-      if (!response.ok) {
-        throw new Error("Fetching Error");
-      }
-      const data = await response.json();
-      setUserData(data);
-    })();
-  }, []);
-
-  if (userData === null) {
-    return <div>Loading...</div>; // TODO: add design for loading screen
-  }
-
+const TransactionList = () => {
   return (
-    <>
-      <main className={`${styles.main} ${inter.className}`}>
-        <div className={styles.transactionsContainer}>
-          {userData.transactions.map((txn) => {
-            return (
-              <div className={styles.transactionItem} key={txn.to.uid}>
-                <div className={styles.detailsContainer}>
-                  <div className={styles.transactionTitle}>
-                    FROM UID{txn.from.uid}
-                  </div>
-                  <div className={styles.transactionDetail}>
-                    TO UID{txn.to.uid}
-                  </div>
-                </div>
-                <div className={styles.valueContainer}>
-                  ${txn.from.balance_before - txn.from.balance_after}{" "}
-                  <HiOutlineChevronRight size={32} />
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </main>
-    </>
-  );
+    <Flex w="80vw" h="50%" flexDir="column">
+      <Text color="gray.100" fontSize="x-large" fontWeight="semibold">Recent Transactions</Text>
+      <VStack color="white" gap="1rem">
+        <Flex w="100%" justifyContent="space-between" alignItems="center" borderBottom="solid 1px" py="1rem" borderBottomColor="gray.600">
+        <HStack>
+          <Flex bg="gray.800" w="2.5rem" h="2.5rem" borderRadius="0.5rem" justifyContent="center" alignItems="center"><Text fontWeight="bold">D</Text></Flex>
+          <VStack gap={0} display="flex" justifyContent="start" alignItems="start">
+            <Text fontWeight="bold">Dribble Pro</Text>
+            <Text color="gray.400">1 hour ago</Text>
+          </VStack>
+        </HStack>
+        <Text fontWeight="semibold" fontSize="lg" color="green.300">+ $720</Text>
+        </Flex>
+        <Flex w="100%" justifyContent="space-between" alignItems="center" borderBottom="solid 1px" py="1rem" borderBottomColor="gray.600">
+        <HStack>
+          <Flex bg="gray.800" w="2.5rem" h="2.5rem" borderRadius="0.5rem" justifyContent="center" alignItems="center"><Text fontWeight="bold">D</Text></Flex>
+          <VStack gap={0} display="flex" justifyContent="start" alignItems="start">
+            <Text fontWeight="bold">Dribble Pro</Text>
+            <Text color="gray.400">1 hour ago</Text>
+          </VStack>
+        </HStack>
+        <Text fontWeight="semibold" fontSize="lg" color="white">- $720</Text>
+        </Flex>
+        <Flex w="100%" justifyContent="space-between" alignItems="center" borderBottom="solid 1px" py="1rem" borderBottomColor="gray.600">
+        <HStack>
+          <Flex bg="gray.800" w="2.5rem" h="2.5rem" borderRadius="0.5rem" justifyContent="center" alignItems="center"><Text fontWeight="bold">D</Text></Flex>
+          <VStack gap={0} display="flex" justifyContent="start" alignItems="start">
+            <Text fontWeight="bold">Dribble Pro</Text>
+            <Text color="gray.400">1 hour ago</Text>
+          </VStack>
+        </HStack>
+        <Text fontWeight="semibold" fontSize="lg" color="green.300">+ $720</Text>
+        </Flex>
+      </VStack>
+    </Flex>
+  )
 }
+
+export default TransactionList

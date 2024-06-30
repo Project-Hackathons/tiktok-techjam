@@ -11,7 +11,7 @@ const Navbar = () => {
       <Flex
         h="4rem"
         px="2rem"
-        py="3rem"
+        py="2rem" //changes based on whether or not we wna include text
         w="100vw"
         shadow="xl"
         alignItems="center"
@@ -55,7 +55,7 @@ const Navbar = () => {
           cursor="pointer"
           _hover={{ bg: "gray.900" }}
           onClick={() => {
-            Router.push("/pay");
+            Router.push("/map");
           }}
           p="1rem"
           borderRadius="0.5rem"

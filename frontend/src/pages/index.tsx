@@ -1,23 +1,11 @@
-import { useEffect, useState } from "react";
-import Head from "next/head";
-import Link from "next/link";
+import TransactionList from "@/components/TransactionList";
+import { Flex, VStack, Text, HStack, Button } from "@chakra-ui/react";
+import { useState, useEffect } from "react";
+import { User } from "../../types";
 
-import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
-import { User } from "../../types/index";
-
-import {
-  BiMoney,
-  BiMoneyWithdraw,
-  BiSolidBank,
-  BiTrophy,
-} from "react-icons/bi";
-import { HiOutlineChevronRight } from "react-icons/hi2";
-
-const inter = Inter({ subsets: ["latin"] });
-
-export default function Home() {
+const Home = () => {
   const [userData, setUserData] = useState<User | null>(null);
+  const [loading, setIsLoading] = useState(true); //todo @euan add skeleton loading states
 
   useEffect(() => {
     (async () => {
@@ -27,83 +15,72 @@ export default function Home() {
       }
       const data = await response.json();
       setUserData(data);
+      setIsLoading(false);
     })();
   }, []);
-
-  if (userData === null) {
-    return <div>Loading...</div>; // TODO: add design for loading screen
-  }
-
   return (
-    <>
-      <Head>
-        <title>TikToken</title>
-        <meta name="description" content="The new way to pay." />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main className={`${styles.main} ${inter.className}`}>
-        <div className={styles.headingContainer}>
-          <div className={styles.heading}>
-            Good Morning, <b>{userData.display_name}</b>!
-          </div>
-        </div>
-        <div className={styles.ctaContainer}>
-          <div className={styles.balanceContainer}>
-            <div className={styles.balanceTitle}>Balance:</div>
-            <div className={styles.balanceAmount}>
-              SGD ${userData.balance}.00
-            </div>
-          </div>
-          <div className={styles.divider} />
-          <div className={styles.buttonsContainer}>
-            <Link href="/pay">
-              <div className={styles.largeButton}>
-                <BiMoney size={45} />
-                Pay
-              </div>
-            </Link>
-            <Link href="/map">
-              <div className={styles.largeButton}>
-                <BiMoneyWithdraw size={45} />
+    <Flex bg="#070F2B" h="100vh" w="100vw">
+      <VStack>
+        <Flex w="100vw" justifyContent="center" py="1rem">
+          <Text
+            textAlign="center"
+            color="white"
+            fontWeight="bold"
+            fontSize="xl"
+          >
+            TikTokens
+          </Text>
+        </Flex>
+
+        <Flex
+          bgGradient="linear(to-r, #ff0050, 45%, #00f2ea)"
+          w="80%"
+          borderRadius="1rem"
+          p="1rem"
+        >
+          <VStack
+            display="flex"
+            justifyContent="start"
+            alignItems="start"
+            gap="0.5rem"
+            w="100%"
+          >
+            <Text
+              textAlign="start"
+              fontSize="large"
+              fontWeight="semibold"
+              color="white"
+            >
+              Current balance
+            </Text>
+            <Text
+              textAlign="start"
+              fontSize="xx-large"
+              fontWeight="bold"
+              color="white"
+            >
+              SGD ${userData?.balance}
+            </Text>
+            <HStack w="100%" display="flex">
+              <Button flex={1} variant="solid" _hover={{ bg: "gray.300" }}>
+                Top-up
+              </Button>
+              <Button
+                flex={1}
+                variant="outline"
+                color="white"
+                _hover={{ bg: "gray.900" }}
+              >
                 Withdraw
-              </div>
-            </Link>
-            <Link href="/map">
-              <div className={styles.largeButton}>
-                <BiSolidBank size={45} />
-                Deposit
-              </div>
-            </Link>
-            <Link href="/">
-              <div className={styles.largeButton}>
-                <BiTrophy size={45} />
-                Rewards
-              </div>
-            </Link>
-          </div>
-        </div>
-        <div className={styles.transactionsContainer}>
-          {userData.transactions.map((txn, index) => {
-            return (
-              <div className={styles.transactionItem} key={index}>
-                <div className={styles.detailsContainer}>
-                  <div className={styles.transactionTitle}>
-                    FROM UID{txn.from.uid}
-                  </div>
-                  <div className={styles.transactionDetail}>
-                    TO UID{txn.to.uid}
-                  </div>
-                </div>
-                <div className={styles.valueContainer}>
-                  ${txn.from.balance_before - txn.from.balance_after}{" "}
-                  <HiOutlineChevronRight size={32} />
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </main>
-    </>
+              </Button>
+            </HStack>
+          </VStack>
+        </Flex>
+
+        <TransactionList />
+      </VStack>
+    </Flex>
   );
-}
+};
+
+export default Home;

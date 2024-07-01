@@ -40,7 +40,7 @@ export default function Home() {
 
   return (
     <Flex bg="#070F2B" h="100vh" w="100vw" className={styles.main}>
-      <div className={styles.headingContainer}> Outgoing Transfer</div>
+      <div className={styles.headingContainer}>Transfer</div>
       <div className={styles.balanceContainer}>
         <div className={styles.transferableTitleContainer}>
           <div className={styles.transferableTitle}>Transferable balance</div>

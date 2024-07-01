@@ -89,7 +89,9 @@ export default function Home() {
           {paymentTypes.map((type) => (
             <div
               key={type.id}
-              className={styles.type}
+              className={`${styles.type} ${
+                type.id == paymentType ? styles.type_selected : ""
+              }`}
               onClick={() => {
                 setPaymentType(type.id);
               }}

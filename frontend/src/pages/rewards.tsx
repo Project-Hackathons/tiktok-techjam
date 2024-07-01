@@ -130,7 +130,7 @@ const Rewards = () => {
                           mr={3}
                           onClick={() => handleClose(index)}
                         >
-                          <Text color="black" fontWeight="bold">
+                          <Text color="white" fontWeight="bold">
                             Redeem
                           </Text>
                         </Button>

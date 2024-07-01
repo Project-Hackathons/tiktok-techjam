@@ -115,3 +115,51 @@
   opacity: 0.8;
   cursor: not-allowed;
 } */
+
+.circlesContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 40px;
+}
+
+.outerPulsingCircle {
+  width: 200px;
+  height: 200px;
+  background-color: var(--color-teal);
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+.innerPulsingCircle {
+  margin-top: -150px;
+  width: 170px;
+  height: 170px;
+  background-color: var(--color-red);
+  border-radius: 50%;
+  animation: pulse 1.4s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+}
+
+.infoText {
+  font-size: 20px;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 20px;
+}

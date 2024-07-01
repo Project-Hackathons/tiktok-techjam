@@ -62,7 +62,16 @@ export default function Home() {
           </div>
         );
       case 1:
-        return <div />;
+        return (
+          <div className={styles.circlesContainer}>
+            <div className={styles.outerPulsingCircle}></div>
+            <div className={styles.innerPulsingCircle}></div>
+            <div className={styles.infoText}>
+              Hold your phones together <br />
+              for quicker payment.
+            </div>
+          </div>
+        );
       case 2:
         return <div />;
     }

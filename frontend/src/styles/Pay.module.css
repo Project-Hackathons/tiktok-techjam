@@ -46,6 +46,20 @@
   overflow: hidden;
   border-radius: var(--border-radius);
   background-color: var(--color-white);
+  gap: 16px;
+}
+
+.typeContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.type {
+  width: 100%;
+  text-align: center;
+  font-size: 22px;
 }
 
 .searchContainer {

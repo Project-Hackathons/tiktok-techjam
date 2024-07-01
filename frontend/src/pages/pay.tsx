@@ -9,6 +9,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [user, setUser] = useState("");
+  const [paymentType, setPaymentType] = useState(0);
   const [search, setSearch] = useState("");
   const [amount, setAmount] = useState("");
   const router = useRouter();
@@ -39,6 +40,28 @@ export default function Home() {
       });
   };
 
+  const renderPaymentBody = () => {
+    switch (paymentType) {
+      case 0:
+        return (
+          <div className={styles.searchContainer}>
+            {/* TODO: add icon, etc */}
+            <input
+              type="text"
+              className={styles.searchBox}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search username"
+            />
+          </div>
+        );
+      case 1:
+        return <div />;
+      case 2:
+        return <div />;
+    }
+  };
+
   return (
     <Flex bg="#070F2B" h="100vh" w="100vw" className={styles.main}>
       <div className={styles.headingContainer}>Transfer</div>
@@ -47,16 +70,33 @@ export default function Home() {
         <div className={styles.transferableValue}>$100</div>
       </div>
       <div className={styles.formContainer}>
-        <div className={styles.searchContainer}>
-          {/* TODO: add icon, etc */}
-          <input
-            type="text"
-            className={styles.searchBox}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search username"
-          />
+        <div className={styles.typeContainer}>
+          <div
+            className={styles.type}
+            onClick={() => {
+              setPaymentType(0);
+            }}
+          >
+            Handle
+          </div>
+          <div
+            className={styles.type}
+            onClick={() => {
+              setPaymentType(1);
+            }}
+          >
+            NFC
+          </div>
+          <div
+            className={styles.type}
+            onClick={() => {
+              setPaymentType(2);
+            }}
+          >
+            QR Pay
+          </div>
         </div>
+        {renderPaymentBody()}
         {/* <div className={styles.formItemContainer}>
           <label htmlFor="userInput">User</label>
           <input

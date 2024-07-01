@@ -9,6 +9,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [user, setUser] = useState("");
+  const [search, setSearch] = useState("");
   const [amount, setAmount] = useState("");
   const router = useRouter();
 
@@ -46,7 +47,16 @@ export default function Home() {
         <div className={styles.transferableValue}>$100</div>
       </div>
       <div className={styles.formContainer}>
-        <div className={styles.formItemContainer}>
+        <div className={styles.searchContainer}>
+          {/* TODO: add icon, etc */}
+          <input
+            type="text"
+            className={styles.searchBox}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+        {/* <div className={styles.formItemContainer}>
           <label htmlFor="userInput">User</label>
           <input
             type="text"
@@ -79,7 +89,7 @@ export default function Home() {
           onClick={handleConfirmTransaction}
         >
           Confirm
-        </div>
+        </div> */}
       </div>
     </Flex>
   );

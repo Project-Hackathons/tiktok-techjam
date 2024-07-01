@@ -73,7 +73,11 @@ export default function Home() {
           </div>
         );
       case 2:
-        return <div />;
+        return (
+          <div className={styles.circlesContainer}>
+            {/* TODO: fix QR scanner */}
+          </div>
+        );
     }
   };
 

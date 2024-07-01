@@ -34,13 +34,8 @@
 }
 
 .transferableTitle {
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 700;
-}
-
-.transferableDesc {
-  font-size: 12px;
-  font-weight: 400;
 }
 
 .transferableValue {

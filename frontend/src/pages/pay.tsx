@@ -103,40 +103,6 @@ export default function Home() {
           ))}
         </div>
         {renderPaymentBody()}
-        {/* <div className={styles.formItemContainer}>
-          <label htmlFor="userInput">User</label>
-          <input
-            type="text"
-            id="userInput"
-            className={styles.transactionInput}
-            value={user}
-            onChange={(e) => setUser(e.target.value)}
-          />
-        </div>
-        <div className={styles.formItemContainer}>
-          <label htmlFor="amountInput">Amount</label>
-          <input
-            type="text"
-            id="amountInput"
-            className={styles.transactionInput}
-            value={amount}
-            onChange={(e) => {
-              const inputAmount = e.target.value;
-              const regex = /^\d*\.?\d{0,2}$/;
-              if (regex.test(inputAmount) || inputAmount === "") {
-                setAmount(inputAmount);
-              }
-            }}
-          />
-        </div>
-        <div
-          className={`${styles.transactionBtn} ${
-            user === "" || amount === "" ? styles.disabled : ""
-          }`}
-          onClick={handleConfirmTransaction}
-        >
-          Confirm
-        </div> */}
       </div>
     </Flex>
   );

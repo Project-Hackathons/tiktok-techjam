@@ -5,6 +5,8 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { Flex } from "@chakra-ui/react";
 
+import { HiOutlineChevronRight } from "react-icons/hi2";
+
 const inter = Inter({ subsets: ["latin"] });
 
 const paymentTypes = [
@@ -57,6 +59,34 @@ export default function Home() {
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search username"
             />
+            <div className={styles.usersContainer}>
+              {[
+                { name: "Joseph Son", username: "joseph sonny" },
+                { name: "Joseph Dad", username: "joseph daddy" },
+                { name: "Joseph Bro", username: "joseph brooy" },
+                { name: "Joseph Son", username: "joseph sonny" },
+                { name: "Joseph Dad", username: "joseph daddy" },
+                { name: "Joseph Bro", username: "joseph brooy" },
+                { name: "Joseph Son", username: "joseph sonny" },
+                { name: "Joseph Dad", username: "joseph daddy" },
+                { name: "Joseph Bro", username: "joseph brooy" },
+                { name: "Joseph Son", username: "joseph sonny" },
+                { name: "Joseph Dad", username: "joseph daddy" },
+                { name: "Joseph Bro", username: "joseph brooy" },
+              ].map((type) => (
+                <div
+                  key={type.username}
+                  className={styles.user}
+                  onClick={() => {}}
+                >
+                  <div className={styles.userDetails}>
+                    <div className={styles.name}>{type.name}</div>
+                    <div className={styles.username}>{type.username}</div>
+                  </div>
+                  <HiOutlineChevronRight size={28} />
+                </div>
+              ))}
+            </div>
           </div>
         );
       case 1:

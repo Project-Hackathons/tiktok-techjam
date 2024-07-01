@@ -87,6 +87,41 @@
   outline: none;
 }
 
+.usersContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  height: 420px;
+  overflow: scroll;
+}
+
+.user {
+  padding: 8px 0px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.user:not(:last-child) {
+  border-bottom: 1px solid var(--color-black);
+}
+
+.userDetails {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.username {
+  font-size: 16px;
+  font-weight: 300;
+}
+
 /* .formItemContainer {
   display: flex;
   flex-direction: row;

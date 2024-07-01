@@ -4,6 +4,7 @@ import styles from "@/styles/Pay.module.css";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { Flex } from "@chakra-ui/react";
+import { Scanner } from "@yudiel/react-qr-scanner";
 
 import { HiOutlineChevronRight } from "react-icons/hi2";
 
@@ -102,8 +103,8 @@ export default function Home() {
         );
       case 2:
         return (
-          <div className={styles.circlesContainer}>
-            {/* TODO: fix QR scanner */}
+          <div className={styles.qrContainer}>
+            <Scanner onScan={(result) => console.log(result)} />
           </div>
         );
     }

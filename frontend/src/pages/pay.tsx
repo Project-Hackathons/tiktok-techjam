@@ -104,7 +104,7 @@ export default function Home() {
       case 2:
         return (
           <div className={styles.qrContainer}>
-            <Scanner onScan={(result) => console.log(result)} />
+            <Scanner onScan={(result: any) => console.log(result)} />
           </div>
         );
     }

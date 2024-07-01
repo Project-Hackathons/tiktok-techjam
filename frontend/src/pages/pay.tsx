@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import styles from "@/styles/Pay.module.css";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { Flex, VStack, Text, HStack, Button } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 
 const inter = Inter({ subsets: ["latin"] });
 

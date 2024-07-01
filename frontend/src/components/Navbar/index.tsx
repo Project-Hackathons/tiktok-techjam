@@ -56,7 +56,7 @@ const Navbar = () => {
           alignItems="center"
           cursor="pointer"
           onClick={() => {
-            Router.push("/map");
+            Router.push("/pay");
           }}
           p="0.25rem"
           bgGradient="linear(to-r, #ff0050, 45%, #00f2ea)"
@@ -67,9 +67,9 @@ const Navbar = () => {
             alignItems="center"
             cursor="pointer"
             _hover={{ bg: "gray.200" }}
-            onClick={() => {
-              Router.push("/pay");
-            }}
+            // onClick={() => {
+            //   Router.push("/pay");
+            // }}
             bg="white"
             p="0.5rem"
             borderRadius="0.5rem"

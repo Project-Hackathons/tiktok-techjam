@@ -20,6 +20,13 @@ export default function Home() {
   const [search, setSearch] = useState("");
   const router = useRouter();
 
+  const userList = [
+    { name: "Joseph Son", username: "joseph sonny" },
+    { name: "Friend number 1", username: "friendly man" },
+    { name: "Tom Cook", username: "cooked man" },
+    { name: "Fish man", username: "fish guy" },
+  ];
+
   // const handleConfirmTransaction = () => {
   //   const accessToken = "<access_token>"; // TODO: replace with access token (from cookies?)
   //   const data = {
@@ -60,32 +67,25 @@ export default function Home() {
               placeholder="Search username"
             />
             <div className={styles.usersContainer}>
-              {[
-                { name: "Joseph Son", username: "joseph sonny" },
-                { name: "Joseph Dad", username: "joseph daddy" },
-                { name: "Joseph Bro", username: "joseph brooy" },
-                { name: "Joseph Son", username: "joseph sonny" },
-                { name: "Joseph Dad", username: "joseph daddy" },
-                { name: "Joseph Bro", username: "joseph brooy" },
-                { name: "Joseph Son", username: "joseph sonny" },
-                { name: "Joseph Dad", username: "joseph daddy" },
-                { name: "Joseph Bro", username: "joseph brooy" },
-                { name: "Joseph Son", username: "joseph sonny" },
-                { name: "Joseph Dad", username: "joseph daddy" },
-                { name: "Joseph Bro", username: "joseph brooy" },
-              ].map((type) => (
-                <div
-                  key={type.username}
-                  className={styles.user}
-                  onClick={() => {}}
-                >
-                  <div className={styles.userDetails}>
-                    <div className={styles.name}>{type.name}</div>
-                    <div className={styles.username}>{type.username}</div>
+              {userList
+                .filter(
+                  (user) =>
+                    user.name.toLowerCase().includes(search.toLowerCase()) ||
+                    user.username.toLowerCase().includes(search.toLowerCase())
+                )
+                .map((type) => (
+                  <div
+                    key={type.username}
+                    className={styles.user}
+                    onClick={() => {}}
+                  >
+                    <div className={styles.userDetails}>
+                      <div className={styles.name}>{type.name}</div>
+                      <div className={styles.username}>{type.username}</div>
+                    </div>
+                    <HiOutlineChevronRight size={28} />
                   </div>
-                  <HiOutlineChevronRight size={28} />
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         );

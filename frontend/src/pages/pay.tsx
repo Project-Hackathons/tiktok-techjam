@@ -54,6 +54,7 @@ export default function Home() {
             className={styles.searchBox}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search username"
           />
         </div>
         {/* <div className={styles.formItemContainer}>

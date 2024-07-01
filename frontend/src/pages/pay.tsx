@@ -7,6 +7,12 @@ import { Flex, VStack, Text, HStack, Button } from "@chakra-ui/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
+const paymentTypes = [
+  { id: 0, label: "Handle" },
+  { id: 1, label: "NFC" },
+  { id: 2, label: "QR Pay" },
+];
+
 export default function Home() {
   const [user, setUser] = useState("");
   const [paymentType, setPaymentType] = useState(0);
@@ -71,30 +77,17 @@ export default function Home() {
       </div>
       <div className={styles.formContainer}>
         <div className={styles.typeContainer}>
-          <div
-            className={styles.type}
-            onClick={() => {
-              setPaymentType(0);
-            }}
-          >
-            Handle
-          </div>
-          <div
-            className={styles.type}
-            onClick={() => {
-              setPaymentType(1);
-            }}
-          >
-            NFC
-          </div>
-          <div
-            className={styles.type}
-            onClick={() => {
-              setPaymentType(2);
-            }}
-          >
-            QR Pay
-          </div>
+          {paymentTypes.map((type) => (
+            <div
+              key={type.id}
+              className={styles.type}
+              onClick={() => {
+                setPaymentType(type.id);
+              }}
+            >
+              {type.label}
+            </div>
+          ))}
         </div>
         {renderPaymentBody()}
         {/* <div className={styles.formItemContainer}>

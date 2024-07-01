@@ -27,12 +27,6 @@
   background-color: var(--color-white);
 }
 
-.transferableTitleContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
 .transferableTitle {
   font-size: 24px;
   font-weight: 700;

@@ -92,6 +92,7 @@ const MapComponent = () => {
             w="100%"
             maxWidth="420px"
             justifyContent="center"
+            px="1rem"
           >
             <Search flyToLocation={flyToLocation} />
           </Flex>

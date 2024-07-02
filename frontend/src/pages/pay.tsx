@@ -130,7 +130,13 @@ export default function Home() {
   };
 
   return (
-    <Flex bg="#070F2B" pb="100px" w="100%" className={styles.main}>
+    <Flex
+      bg="#070F2B"
+      pb="100px"
+      height="100vh"
+      w="100%"
+      className={styles.main}
+    >
       <div className={styles.headingContainer}>Transfer</div>
       <div className={styles.balanceContainer}>
         <div className={styles.transferableTitle}>Balance</div>

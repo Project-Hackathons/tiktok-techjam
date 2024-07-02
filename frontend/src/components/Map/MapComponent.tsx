@@ -98,7 +98,7 @@ const MapComponent = () => {
           </Flex>
           <Flex
             position="fixed"
-            bottom={{ base: "5rem", md: "50" }}
+            bottom="5rem"
             zIndex={99}
             w="100%"
             maxWidth="420px"

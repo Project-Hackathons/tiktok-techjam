@@ -4,7 +4,7 @@
   align-items: center;
   min-height: 100vh;
   background-color: var(--color-black);
-  padding: 6vh 10vw;
+  padding: 6vh 30px;
   gap: 30px;
 }
 

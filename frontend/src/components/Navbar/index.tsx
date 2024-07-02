@@ -9,12 +9,19 @@ import { GoHistory } from "react-icons/go";
 const Navbar = () => {
   const Router = useRouter();
   return (
-    <Flex bg="#070F2B" position="fixed" bottom="0" zIndex="9999">
+    <Flex
+      bg="#070F2B"
+      position="fixed"
+      bottom="0"
+      zIndex="9999"
+      w="100%"
+      maxWidth="420px"
+    >
       <Flex
         h="4rem"
         px="1rem"
         py="2rem" //changes based on whether or not we wna include text
-        w="100vw"
+        w="100%"
         shadow="xl"
         alignItems="center"
         justifyContent="space-between"

@@ -66,7 +66,7 @@ const Rewards = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Flex bg="#070F2B" w="100%" pb="80px">
-        <VStack gap="1.5rem">
+        <VStack gap="1.5rem" w="100%">
           <Flex
             w="100vw"
             justifyContent="center"
@@ -98,7 +98,7 @@ const Rewards = () => {
                   <Image
                     src={`/rewards/reward${(index % 3) + 1}.avif`}
                     alt="rewardImg"
-                    boxSize="150px"
+                    boxSize="140px"
                     borderRadius="20px"
                     onClick={() => handleOpen(index)}
                   />

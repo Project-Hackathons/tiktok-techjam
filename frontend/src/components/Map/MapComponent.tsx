@@ -84,23 +84,68 @@ const MapComponent = () => {
   return (
     <>
       {loadMap ? (
-        <Box w="100vw" h="100vh" overflow="hidden">
+        <Box w="100%" h="100vh" overflow="hidden">
           <Flex
             position="fixed"
             left="0"
             zIndex={99}
             justifyContent="center"
             display={{ base: "none", md: "block" }}
+            w="100%"
+            maxWidth="420px"
           >
-            <Flex bg="white" h="100vh" w="4rem" shadow="xl" alignItems="center" flexDirection="column">
-              <Flex mt="1rem" justifyContent="center" alignItems="center" h="3rem" w="3rem" cursor="pointer"  _hover={{bg:"gray.200"}} onClick={()=>{Router.push("/")}} borderRadius="0.5rem">
-                <CgProfile size="2rem" color="grey"/>
+            <Flex
+              bg="white"
+              h="100vh"
+              w="4rem"
+              shadow="xl"
+              alignItems="center"
+              flexDirection="column"
+            >
+              <Flex
+                mt="1rem"
+                justifyContent="center"
+                alignItems="center"
+                h="3rem"
+                w="3rem"
+                cursor="pointer"
+                _hover={{ bg: "gray.200" }}
+                onClick={() => {
+                  Router.push("/");
+                }}
+                borderRadius="0.5rem"
+              >
+                <CgProfile size="2rem" color="grey" />
               </Flex>
-              <Flex mt="1rem" justifyContent="center" alignItems="center" h="3rem" w="3rem" cursor="pointer"  _hover={{bg:"gray.200"}} onClick={()=>{Router.push("/pay")}} borderRadius="0.5rem">
-                <BiMoney size="2rem" color="grey"/>
+              <Flex
+                mt="1rem"
+                justifyContent="center"
+                alignItems="center"
+                h="3rem"
+                w="3rem"
+                cursor="pointer"
+                _hover={{ bg: "gray.200" }}
+                onClick={() => {
+                  Router.push("/pay");
+                }}
+                borderRadius="0.5rem"
+              >
+                <BiMoney size="2rem" color="grey" />
               </Flex>
-              <Flex mt="1rem" justifyContent="center" alignItems="center" h="3rem" w="3rem" cursor="pointer"  _hover={{bg:"gray.200"}} onClick={()=>{Router.push("/rewards")}} borderRadius="0.5rem">
-                <BiTrophy size="2rem" color="grey"/>
+              <Flex
+                mt="1rem"
+                justifyContent="center"
+                alignItems="center"
+                h="3rem"
+                w="3rem"
+                cursor="pointer"
+                _hover={{ bg: "gray.200" }}
+                onClick={() => {
+                  Router.push("/rewards");
+                }}
+                borderRadius="0.5rem"
+              >
+                <BiTrophy size="2rem" color="grey" />
               </Flex>
             </Flex>
           </Flex>
@@ -108,16 +153,18 @@ const MapComponent = () => {
             position="fixed"
             top="50"
             zIndex={99}
-            w="100vw"
+            w="100%"
+            maxWidth="420px"
             justifyContent="center"
           >
             <Search flyToLocation={flyToLocation} />
           </Flex>
           <Flex
             position="fixed"
-            bottom={{base:"5rem", md:"50"}}
+            bottom={{ base: "5rem", md: "50" }}
             zIndex={99}
-            w="100vw"
+            w="100%"
+            maxWidth="420px"
             justifyContent="end"
           >
             <Button

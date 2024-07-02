@@ -110,7 +110,7 @@ const Rewards = () => {
                     <ModalOverlay />
                     <ModalContent mx="30px" bgColor="#070F2B" textColor="white">
                       <ModalHeader>Congratulations!</ModalHeader>
-                      <ModalCloseButton />
+                      <ModalCloseButton borderColor="none" />
                       <ModalBody>
                         <VStack spacing="20px">
                           <Image

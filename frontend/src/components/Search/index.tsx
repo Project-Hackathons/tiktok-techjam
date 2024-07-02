@@ -17,17 +17,21 @@ import type { PlaceData } from "@googlemaps/google-maps-services-js";
 
 const SearchComponent = ({
   flyToLocation,
+  onOpen,
 }: {
   flyToLocation: (location: LatLngTuple) => void;
+  onOpen: () => void;
 }) => {
   const [searchedLocation, setSearchedLocation] = useState("");
   const [searchResults, setSearchResults] = useState<Partial<PlaceData>[]>([]);
   const [showSearchResults, setShowSearchResults] = useState(true);
-  const [isSearching, setIsSearching] = useState(false)
+  const [isSearching, setIsSearching] = useState(false);
 
   const fetchGoogleMapResults = async () => {
-    const response = await axios.post("/api/search", { query: searchedLocation });
-    return response.data
+    const response = await axios.post("/api/search", {
+      query: searchedLocation,
+    });
+    return response.data;
   };
 
   const resetSearch = ({ clearBar = true }: { clearBar?: boolean }) => {
@@ -45,7 +49,7 @@ const SearchComponent = ({
   const handleSearch = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      setIsSearching(true)
+      setIsSearching(true);
       const result = await fetchGoogleMapResults();
       setSearchResults(result);
       setShowSearchResults(true);
@@ -54,12 +58,15 @@ const SearchComponent = ({
       setSearchResults([]);
       console.error("Search failed:", error);
     }
-    setIsSearching(false)
+    setIsSearching(false);
   };
 
   const handleSelect = (location: { lat: number; lng: number }) => {
     resetSearch({});
     flyToLocation([location.lat, location.lng]);
+    // setTimeout(() => {
+    //   onOpen();
+    // }, 2000);
   };
 
   return (
@@ -75,7 +82,7 @@ const SearchComponent = ({
           </InputLeftElement>
           <Box cursor="pointer" onClick={() => resetSearch({})}>
             <InputRightElement onClick={() => resetSearch({})}>
-              {isSearching? <Spinner size='sm'/> : <SmallCloseIcon /> }
+              {isSearching ? <Spinner size="sm" /> : <SmallCloseIcon />}
             </InputRightElement>
           </Box>
           <Input

@@ -21,7 +21,7 @@ interface StoreDrawerProps extends UseDisclosureProps {
   // Add any additional props here
   stores: Store[];
   currentPosition: LatLngTuple;
-  flyToLocation: (location: LatLngTuple) => void;
+  flyToLocation: (location: LatLngTuple, changeCurr: boolean) => void;
 }
 
 const StoreDrawer = ({
@@ -82,6 +82,11 @@ const StoreDrawer = ({
     // Return the sorted array of stores
     return sortedStores;
   };
+
+  const showOnMap = (pos: LatLngTuple) => {
+    onClose!();
+    flyToLocation(pos, false);
+  };
   return (
     <Flex justifyContent="center">
       <Drawer
@@ -117,84 +122,85 @@ const StoreDrawer = ({
           <DrawerBody>
             <Flex alignItems="center" h="100%" pb="4rem" overflowX="scroll">
               <HStack h="100%" gap="1rem">
-                {filteredStores(stores).slice(5).map((store) => {
-                  return (
-                    <Flex
-                      h="90%"
-                      minW="17.5rem"
-                      shadow="lg"
-                      border="solid 1px"
-                      borderColor="gray.700"
-                      borderRadius="1rem"
-                      bg="gray.800"
-                      key={store.address}
-                      color="white"
-                    >
+                {filteredStores(stores)
+                  .slice(5)
+                  .map((store) => {
+                    return (
                       <Flex
-                        p="1rem"
-                        w="100%"
-                        flexDirection="column"
-                        justifyContent="space-between"
+                        h="90%"
+                        minW="17.5rem"
+                        shadow="lg"
+                        border="solid 1px"
+                        borderColor="gray.700"
+                        borderRadius="1rem"
+                        bg="gray.800"
+                        key={store.address}
+                        color="white"
                       >
-                        <VStack
-                          display="flex"
-                          justifyContent="start"
-                          alignItems="start"
+                        <Flex
+                          p="1rem"
+                          w="100%"
+                          flexDirection="column"
+                          justifyContent="space-between"
                         >
-                          <Text textAlign="start" fontWeight="semibold">
-                            {store.name}
-                          </Text>
-                          <Text
-                            textAlign="start"
-                            fontSize="sm"
-                            color="gray.400"
-                            noOfLines={1}
+                          <VStack
+                            display="flex"
+                            justifyContent="start"
+                            alignItems="start"
                           >
-                            {store.distance}{" "}
-                            km • {store.address}
-                          </Text>
-                          <Text
-                            textAlign="start"
-                            fontSize="sm"
-                            color="gray.400"
-                          >
-                            Withdrawal up to: ${store.withdrawal}
-                          </Text>
-                        </VStack>
-                        <HStack w="100%" display="flex">
-                          <Button
-                            flex={1}
-                            onClick={() =>
-                              flyToLocation([store.lat, store.lng])
-                            }
-                            alignSelf="end"
-                            size="sm"
-                            color="#088395"
-                            bg="white"
-                            variant="outline"
-                            mt="1rem"
-                          >
-                            Show on map
-                          </Button>
-                          <Button
-                            flex={1}
-                            onClick={() => getDirection([store.lat, store.lng])}
-                            alignSelf="end"
-                            size="sm"
-                            bg="#69C9D0"
-                            color="white"
-                            variant="solid"
-                            colorScheme="blue"
-                            rightIcon={<ArrowForwardIcon />}
-                            mt="1rem"
-                          >
-                            Directions
-                          </Button>
-                        </HStack>
+                            <Text textAlign="start" fontWeight="semibold">
+                              {store.name}
+                            </Text>
+                            <Text
+                              textAlign="start"
+                              fontSize="sm"
+                              color="gray.400"
+                              noOfLines={1}
+                            >
+                              {store.distance} km • {store.address}
+                            </Text>
+                            <Text
+                              textAlign="start"
+                              fontSize="sm"
+                              color="gray.400"
+                            >
+                              Withdrawal up to: ${store.withdrawal}
+                            </Text>
+                          </VStack>
+                          <HStack w="100%" display="flex">
+                            <Button
+                              flex={1}
+                              onClick={() => showOnMap([store.lat, store.lng])}
+                              alignSelf="end"
+                              size="sm"
+                              color="#088395"
+                              bg="white"
+                              variant="outline"
+                              mt="1rem"
+                            >
+                              Show on map
+                            </Button>
+                            <Button
+                              flex={1}
+                              onClick={() =>
+                                getDirection([store.lat, store.lng])
+                              }
+                              alignSelf="end"
+                              size="sm"
+                              bg="#69C9D0"
+                              color="white"
+                              variant="solid"
+                              colorScheme="blue"
+                              rightIcon={<ArrowForwardIcon />}
+                              mt="1rem"
+                            >
+                              Directions
+                            </Button>
+                          </HStack>
+                        </Flex>
                       </Flex>
-                    </Flex>
-                  );
-                })}
+                    );
+                  })}
               </HStack>
             </Flex>
           </DrawerBody>

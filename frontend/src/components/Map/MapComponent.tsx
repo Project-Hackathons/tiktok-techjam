@@ -28,7 +28,7 @@ import Router from "next/router";
 import { BiCurrentLocation, BiMoney, BiTrophy } from "react-icons/bi";
 import StoreDrawer from "../StoreDrawer";
 import type { Store } from "./ShowMarkers";
-import axios from "axios"
+import axios from "axios";
 
 const MapComponent = () => {
   const [stores, setStores] = useState<Store[]>([]);
@@ -191,7 +191,6 @@ const MapComponent = () => {
     fetchStores();
   }, []);
 
-
   const { isOpen, onClose, onOpen } = useDisclosure();
   // INITIALIZING MAP
   const mapRef = useRef<Map | null>(null);
@@ -253,10 +252,12 @@ const MapComponent = () => {
     }
   }, [loadMap]);
 
-  const flyToLocation = (position: LatLngTuple): void => {
+  const flyToLocation = (position: LatLngTuple, changeCurr = true): void => {
     if (mapRef.current) {
       mapRef.current.flyTo(position, 18);
-      setCurrPosition(position);
+      if (changeCurr) {
+        setCurrPosition(position);
+      }
     }
   };
 
@@ -273,7 +274,7 @@ const MapComponent = () => {
             justifyContent="center"
             px="1rem"
           >
-            <Search flyToLocation={flyToLocation} />
+            <Search flyToLocation={flyToLocation} onOpen={onOpen} />
           </Flex>
 
           <Flex
@@ -312,7 +313,14 @@ const MapComponent = () => {
                   View Stores
                 </Button>
               </Flex>
-            <StoreDrawer onOpen={onOpen} onClose={onClose} isOpen={isOpen} stores={stores} currentPosition={currPosition} flyToLocation={flyToLocation}/>
+              <StoreDrawer
+                onOpen={onOpen}
+                onClose={onClose}
+                isOpen={isOpen}
+                stores={stores}
+                currentPosition={currPosition}
+                flyToLocation={flyToLocation}
+              />
             </VStack>
           </Flex>
           <MapContainer
@@ -327,7 +335,7 @@ const MapComponent = () => {
               attribution='&nbsp;<a href="https://www.onemap.gov.sg/" target="_blank" rel="noopener noreferrer">OneMap</a>&nbsp;&copy;&nbsp;contributors&nbsp;&#124;&nbsp;<a href="https://www.sla.gov.sg/" target="_blank" rel="noopener noreferrer">Singapore Land Authority</a>'
               url="https://www.onemap.gov.sg/maps/tiles/Night/{z}/{x}/{y}.png"
             />
-            <ShowMarkers stores={stores}/>
+            <ShowMarkers stores={stores} />
             <Marker position={currPosition} />
           </MapContainer>
         </Box>

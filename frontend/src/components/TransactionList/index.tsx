@@ -1,10 +1,16 @@
 import { Divider, Flex, HStack, Text, VStack } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 
 const TransactionList = () => {
+  const router = useRouter()
+  const path = router.asPath
+  
   return (
     <Flex w="80%" h="50%" flexDir="column">
       <Text color="gray.100" fontSize="x-large" fontWeight="semibold">
-        Recent Transactions
+        {
+          path == "/history" ? "Transaction History" : "Recent Transactions"
+        }
       </Text>
       <VStack color="white" gap="1rem">
         <Flex

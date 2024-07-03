@@ -135,7 +135,12 @@ export default function Home() {
       case 2:
         return (
           <div className={styles.qrContainer}>
-            <Scanner onScan={(result: any) => console.log(result)} />
+            <Scanner
+              onScan={(result) => {
+                setPaymentHandle(result[0].rawValue);
+                setShowPaymentModal(true);
+              }}
+            />
           </div>
         );
     }

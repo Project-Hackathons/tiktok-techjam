@@ -30,6 +30,7 @@ export default function Home() {
   const [paymentType, setPaymentType] = useState(0);
   const [search, setSearch] = useState("");
   const [userDetails, setUserDetails] = useState<UserType>();
+  const [showPaymentModal, setShowPaymentModal] = useState(true);
   const router = useRouter();
 
   const [docEnv, setDocEnv] = useState(false);
@@ -190,7 +191,16 @@ export default function Home() {
           ))}
         </div>
         {renderPaymentBody()}
-        {docEnv && createPortal(<PaymentModal />, document.body)}
+        {docEnv &&
+          showPaymentModal &&
+          createPortal(
+            <PaymentModal
+              hideModal={() => {
+                setShowPaymentModal(false);
+              }}
+            />,
+            document.body
+          )}
       </div>
     </Flex>
   );

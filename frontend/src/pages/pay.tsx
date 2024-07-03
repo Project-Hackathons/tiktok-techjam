@@ -13,6 +13,8 @@ import {
 import { Scanner } from "@yudiel/react-qr-scanner";
 
 import { HiOutlineChevronRight } from "react-icons/hi2";
+import PaymentModal from "@/components/PaymentModal";
+
 import { userInfo, UserType } from "./api/userInfo";
 import { createPortal } from "react-dom";
 
@@ -188,15 +190,7 @@ export default function Home() {
           ))}
         </div>
         {renderPaymentBody()}
-        {docEnv &&
-          createPortal(
-            <div className={styles.modalBackground}>
-              <div className={styles.modalCard}>
-                <p>This is the confirmation modal.</p>
-              </div>
-            </div>,
-            document.body
-          )}
+        {docEnv && createPortal(<PaymentModal />, document.body)}
       </div>
     </Flex>
   );

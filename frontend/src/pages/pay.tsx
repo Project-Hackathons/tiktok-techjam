@@ -174,12 +174,15 @@ export default function Home() {
           id="amountInput"
           className={styles.paymentAmountInput}
           value={paymentAmount}
-          placeholder="0.00"
+          placeholder="$0.00"
           onChange={(e) => {
-            const inputAmount = e.target.value;
+            let inputAmount = e.target.value;
+            if (inputAmount.startsWith("$")) {
+              inputAmount = inputAmount.slice(1);
+            }
             const regex = /^\d*\.?\d{0,2}$/;
             if (regex.test(inputAmount) || inputAmount === "") {
-              setPaymentAmount(inputAmount);
+              setPaymentAmount(`$${inputAmount}`);
             }
           }}
         />
@@ -209,7 +212,7 @@ export default function Home() {
                 setShowPaymentModal(false);
               }}
               paymentHandle={paymentHandle}
-              paymentAmount={paymentAmount}
+              paymentAmount={paymentAmount.slice(1)}
             />,
             document.body
           )}

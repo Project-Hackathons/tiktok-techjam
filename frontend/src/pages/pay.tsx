@@ -30,7 +30,8 @@ export default function Home() {
   const [paymentType, setPaymentType] = useState(0);
   const [search, setSearch] = useState("");
   const [userDetails, setUserDetails] = useState<UserType>();
-  const [showPaymentModal, setShowPaymentModal] = useState(true);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [paymentHandle, setPaymentHandle] = useState("");
   const router = useRouter();
 
   const [docEnv, setDocEnv] = useState(false);
@@ -105,7 +106,10 @@ export default function Home() {
                   <div
                     key={type.username}
                     className={styles.user}
-                    onClick={() => {}}
+                    onClick={() => {
+                      setPaymentHandle(type.username);
+                      setShowPaymentModal(true);
+                    }}
                   >
                     <Avatar name={type.name}></Avatar>
                     <div className={styles.userDetails}>
@@ -114,7 +118,10 @@ export default function Home() {
                         className={styles.username}
                       >{`@${type.username}`}</div>
                     </div>
-                    {/* <HiOutlineChevronRight size={28} /> */}
+                    <HiOutlineChevronRight
+                      size={28}
+                      style={{ marginLeft: "auto" }}
+                    />
                   </div>
                 ))}
             </div>
@@ -198,6 +205,7 @@ export default function Home() {
               hideModal={() => {
                 setShowPaymentModal(false);
               }}
+              paymentHandle={paymentHandle}
             />,
             document.body
           )}

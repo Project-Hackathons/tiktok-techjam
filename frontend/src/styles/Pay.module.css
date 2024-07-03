@@ -47,6 +47,14 @@
   background-color: var(--color-darkerBlack);
   gap: 16px;
 }
+.formContainerDisabled {
+  pointer-events: none;
+  opacity: 1;
+  filter: grayscale(20%);
+}
+.formContainerDisabled * {
+  color: #aaa !important;
+}
 
 .typeContainer {
   display: flex;

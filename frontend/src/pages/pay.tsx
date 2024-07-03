@@ -187,7 +187,11 @@ export default function Home() {
           }}
         />
       </Flex>
-      <div className={styles.formContainer}>
+      <div
+        className={`${styles.formContainer} ${
+          paymentAmount == "" ? styles.formContainerDisabled : ""
+        }`}
+      >
         <div className={styles.typeContainer}>
           {paymentTypes.map((type) => (
             <div

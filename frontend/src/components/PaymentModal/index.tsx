@@ -48,10 +48,18 @@ const PaymentModal = ({
   return (
     <div className={styles.modalBackground} onClick={handleBackgroundClick}>
       <div className={styles.modalCard} onClick={handleCardClick}>
-        <p>
-          You are paying {paymentHandle} {paymentAmount}.
-        </p>
-        <div onClick={handleConfirmTransaction}>Confirm Transaction</div>
+        <div>
+          <div className={styles.medText}>You are paying</div>
+          <div className={styles.largeText}>{paymentHandle} </div>
+          <div className={styles.medText}>a grand total of</div>
+          <div className={styles.largeText}>${paymentAmount}</div>
+        </div>
+        <div
+          className={styles.confirmTransactionCta}
+          onClick={handleConfirmTransaction}
+        >
+          Confirm Transaction
+        </div>
       </div>
     </div>
   );

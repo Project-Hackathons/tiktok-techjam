@@ -85,20 +85,18 @@ const Rewards = () => {
               {`You have ${rewardList.length} unopened rewards.`}
             </Text>
           </Flex>
-          <Flex
-            w="100%"
-            justify="space-between"
-            flexWrap="wrap"
-            px="40px"
-            rowGap="20px"
-          >
+          <Flex w="100%" justify="space-around" flexWrap="wrap" rowGap="20px">
             {rewardList.map((value, index) => {
               return (
-                <Box key={index}>
+                <Box
+                  key={index}
+                  w="42%"
+                  transition="transform 0.3s ease"
+                  _hover={{ cursor: "pointer", transform: "scale(1.1)" }}
+                >
                   <Image
                     src={`/rewards/reward${(index % 3) + 1}.avif`}
                     alt="rewardImg"
-                    boxSize="140px"
                     borderRadius="20px"
                     onClick={() => handleOpen(index)}
                   />
@@ -106,6 +104,7 @@ const Rewards = () => {
                     isOpen={modalState[index]}
                     onClose={() => handleClose(index)}
                     isCentered
+                    size="xs"
                   >
                     <ModalOverlay />
                     <ModalContent mx="30px" bgColor="#070F2B" textColor="white">

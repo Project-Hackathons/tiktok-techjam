@@ -2,14 +2,7 @@ import { Inter } from "next/font/google";
 import styles from "@/styles/Pay.module.css";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import {
-  Flex,
-  NumberInput,
-  NumberInputField,
-  Box,
-  Text,
-  Avatar,
-} from "@chakra-ui/react";
+import { Flex, Box, Text, Avatar } from "@chakra-ui/react";
 import { Scanner } from "@yudiel/react-qr-scanner";
 
 import { HiOutlineChevronRight } from "react-icons/hi2";

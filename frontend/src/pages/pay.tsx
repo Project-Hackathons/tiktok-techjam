@@ -190,7 +190,7 @@ export default function Home() {
         {renderPaymentBody()}
         {docEnv &&
           createPortal(
-            <div className={styles.confirmationModal}>
+            <div className={styles.modalBackground}>
               <div className={styles.modalCard}>
                 <p>This is the confirmation modal.</p>
               </div>

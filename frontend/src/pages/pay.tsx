@@ -161,8 +161,8 @@ export default function Home() {
         <div className={styles.transferableTitle}>Balance</div>
         <div className={styles.transferableValue}>${userDetails?.balance}</div>
       </div>
-      <Flex w="117%" bg="#0a1640" justify="space-between" py="20px">
-        <Box textColor="grey" px="30px" textAlign="center">
+      <Flex w="420px" bg="#0a1640" justify="space-around" py="20px">
+        <Box textColor="grey" textAlign="start">
           <Text fontSize="sm">Amount in</Text>
           <Text fontSize="2xl" mt="-7px">
             {" "}

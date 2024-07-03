@@ -181,7 +181,9 @@ export default function Home() {
               inputAmount = inputAmount.slice(1);
             }
             const regex = /^\d*\.?\d{0,2}$/;
-            if (regex.test(inputAmount) || inputAmount === "") {
+            if (inputAmount === "") {
+              setPaymentAmount("");
+            } else if (regex.test(inputAmount)) {
               setPaymentAmount(`$${inputAmount}`);
             }
           }}

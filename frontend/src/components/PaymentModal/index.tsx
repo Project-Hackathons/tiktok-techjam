@@ -23,7 +23,7 @@ const PaymentModal = ({
     const accessToken = "<access_token>"; // TODO: replace with access token (from cookies?)
     const data = {
       from: userDetails.username,
-      to: paymentHandle, // TODO: add function to replace username with userid
+      to: paymentHandle,
       amount: parseFloat(paymentAmount),
     };
 

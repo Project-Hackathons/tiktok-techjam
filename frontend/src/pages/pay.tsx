@@ -46,8 +46,6 @@ export default function Home() {
   const userList = [
     { name: "Joseph Son", username: "joseph_sonny" },
     { name: "Friend number 1", username: "friendly_man" },
-    { name: "Tom Cook", username: "cooked_man" },
-    { name: "Fish man", username: "fish_guy" },
   ];
 
   // const handleConfirmTransaction = () => {

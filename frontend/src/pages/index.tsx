@@ -2,10 +2,12 @@ import TransactionList from "@/components/TransactionList";
 import { Flex, VStack, Text, HStack, Button } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { User } from "../../types";
+import { useRouter } from "next/router";
 
 const Home = () => {
   const [userData, setUserData] = useState<User | null>(null);
   const [loading, setIsLoading] = useState(true); //todo @euan add skeleton loading states
+  const router = useRouter()
 
   useEffect(() => {
     (async () => {
@@ -70,6 +72,7 @@ const Home = () => {
                 variant="outline"
                 color="white"
                 _hover={{ bg: "gray.900" }}
+                onClick={()=>router.push("/pay")}
               >
                 Withdraw
               </Button>

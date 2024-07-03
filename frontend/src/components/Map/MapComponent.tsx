@@ -341,8 +341,8 @@ const MapComponent = () => {
         </Box>
       ) : (
         <Flex w="100%" h="100vh" justifyContent="center" alignItems="center">
-          <Text fontSize="x-large">
-            Please enable location services for the best viewer experience!
+          <Text fontSize="x-large" fontWeight="semibold" textAlign="center" color="white">
+            Location services need to be enabled for the best viewing experience!
           </Text>
         </Flex>
       )}

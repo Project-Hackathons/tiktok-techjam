@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import Head from "next/head";
 import {
@@ -18,6 +17,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import GiftBox from "@/components/GiftBox";
 
 const Rewards = () => {
   const rewardList: rewardType[] = [
@@ -38,7 +38,11 @@ const Rewards = () => {
     { rewardMessage: "Cashback", rewardAmount: 1 },
     { rewardMessage: "Amazon Voucher", rewardAmount: 10 },
   ];
-  const [modalState, setModalState] = useState(rewardList.map(() => false));
+  const [modalState, setModalState] = useState(
+    rewardList.map(() => {
+      return { modal_opened: false, ticket_redeemed: false };
+    })
+  );
 
   interface rewardType {
     rewardMessage: string;
@@ -46,15 +50,34 @@ const Rewards = () => {
   }
 
   const handleOpen = (index: any) => {
-    const newState = modalState.map((state, i) => (i === index ? true : state));
+    const newState = modalState.map((state, i) =>
+      i === index
+        ? { modal_opened: true, ticket_redeemed: state.ticket_redeemed }
+        : state
+    );
     setModalState(newState);
   };
 
   const handleClose = (index: any) => {
     const newState = modalState.map((state, i) =>
-      i === index ? false : state
+      i === index
+        ? { modal_opened: false, ticket_redeemed: state.ticket_redeemed }
+        : state
     );
     setModalState(newState);
+  };
+
+  const handleRedeemTicket = (index: any) => {
+    const newState = modalState.map((state, i) =>
+      i === index
+        ? { modal_opened: state.modal_opened, ticket_redeemed: true }
+        : state
+    );
+    setModalState(newState);
+  };
+
+  const deleteReward = (index: any) => {
+    //call api to delete reward from db
   };
 
   return (
@@ -85,55 +108,78 @@ const Rewards = () => {
               {`You have ${rewardList.length} unopened rewards.`}
             </Text>
           </Flex>
-          <Flex
-            w="100%"
-            justify="space-between"
-            flexWrap="wrap"
-            px="40px"
-            rowGap="20px"
-          >
+          <Flex w="100%" justify="space-around" flexWrap="wrap" rowGap="20px">
             {rewardList.map((value, index) => {
               return (
-                <Box key={index}>
+                <Box
+                  key={index}
+                  w="42%"
+                  transition="transform 0.3s ease"
+                  _hover={{ cursor: "pointer", transform: "scale(1.1)" }}
+                >
                   <Image
-                    src={`/rewards/reward${(index % 3) + 1}.avif`}
+                    src={
+                      modalState[index].ticket_redeemed
+                        ? "/rewards/tick.avif"
+                        : `/rewards/reward${(index % 3) + 1}.avif`
+                    }
                     alt="rewardImg"
-                    boxSize="140px"
                     borderRadius="20px"
                     onClick={() => handleOpen(index)}
                   />
                   <Modal
-                    isOpen={modalState[index]}
+                    isOpen={modalState[index].modal_opened}
                     onClose={() => handleClose(index)}
                     isCentered
+                    size="xs"
                   >
                     <ModalOverlay />
                     <ModalContent mx="30px" bgColor="#070F2B" textColor="white">
                       <ModalHeader>Congratulations!</ModalHeader>
                       <ModalCloseButton borderColor="none" />
-                      <ModalBody>
-                        <VStack spacing="20px">
-                          <Image
-                            src="/rewards/rewardLogo.svg"
-                            alt="rewardLogo"
-                            boxSize="50px"
-                          ></Image>
-                          <Text>
-                            {`You have won $${value.rewardAmount} worth of ${value.rewardMessage}!`}
-                          </Text>
-                        </VStack>
-                      </ModalBody>
+                      {modalState[index].ticket_redeemed ? (
+                        <ModalBody>
+                          <VStack spacing="20px">
+                            <Image
+                              src="/rewards/rewardLogo.svg"
+                              alt="rewardLogo"
+                              boxSize="50px"
+                            ></Image>
+                            <Text>
+                              {`You have won $${value.rewardAmount} worth of ${value.rewardMessage}!`}
+                            </Text>
+                          </VStack>
+                        </ModalBody>
+                      ) : (
+                        <GiftBox
+                          handleClick={handleRedeemTicket}
+                          index={index}
+                        />
+                      )}
 
                       <ModalFooter>
-                        <Button
-                          bgGradient="linear(to-r, #ff0050, 45%, #00f2ea)"
-                          mr={3}
-                          onClick={() => handleClose(index)}
-                        >
-                          <Text color="white" fontWeight="bold">
-                            Redeem
-                          </Text>
-                        </Button>
+                        <Flex w="100%" justify="space-evenly">
+                          <Button
+                            bgGradient="linear(to-r, #ff0050, 45%, #00f2ea)"
+                            mr={3}
+                            onClick={() => handleClose(index)}
+                          >
+                            <Text color="white" fontWeight="bold">
+                              Close
+                            </Text>
+                          </Button>
+                          {modalState[index].ticket_redeemed && (
+                            <Button
+                              bgGradient="linear(to-l, #ff0050, 45%, #00f2ea)"
+                              mr={3}
+                              onClick={() => deleteReward(index)}
+                            >
+                              <Text color="white" fontWeight="bold">
+                                Redeem
+                              </Text>
+                            </Button>
+                          )}
+                        </Flex>
                       </ModalFooter>
                     </ModalContent>
                   </Modal>

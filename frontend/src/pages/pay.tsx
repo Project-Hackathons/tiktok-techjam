@@ -192,7 +192,9 @@ export default function Home() {
         {docEnv &&
           createPortal(
             <div className={styles.confirmationModal}>
-              <p>This child is placed in the document body.</p>
+              <div className={styles.modalCard}>
+                <p>This is the confirmation modal.</p>
+              </div>
             </div>,
             document.body
           )}

@@ -238,3 +238,9 @@
   align-items: center;
   justify-content: center;
 }
+
+.modalCard {
+  width: 340px;
+  height: 380px;
+  background-color: var(--color-white);
+}

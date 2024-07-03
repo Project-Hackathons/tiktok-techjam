@@ -228,8 +228,8 @@
 
 .qrContainer {
   align-self: center;
-  padding: 10px;
-  width: 80%;
+  display: flex;
+  height: fit-content;
   margin-top: auto;
   margin-bottom: auto;
 }

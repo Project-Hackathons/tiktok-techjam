@@ -1,7 +1,6 @@
 import { Inter } from "next/font/google";
 import styles from "@/styles/Pay.module.css";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import { Flex, Box, Text, Avatar } from "@chakra-ui/react";
 import { Scanner } from "@yudiel/react-qr-scanner";
 
@@ -26,7 +25,6 @@ export default function Home() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentHandle, setPaymentHandle] = useState("");
   const [paymentAmount, setPaymentAmount] = useState("");
-  const router = useRouter();
 
   const [docEnv, setDocEnv] = useState(false);
 
@@ -47,32 +45,6 @@ export default function Home() {
     { name: "Joseph Son", username: "joseph_sonny" },
     { name: "Friend number 1", username: "friendly_man" },
   ];
-
-  // const handleConfirmTransaction = () => {
-  //   const accessToken = "<access_token>"; // TODO: replace with access token (from cookies?)
-  //   const data = {
-  //     from: "OWNSELF ID",
-  //     to: user, // TODO: add function to replace username with userid
-  //     amount: parseFloat(amount),
-  //   };
-
-  //   fetch("http://152.42.182.247:5000/transfer", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: `Bearer ${accessToken}`,
-  //     },
-  //     body: JSON.stringify(data),
-  //   })
-  //     .then((response) => response.json())
-  //     .then(() => {
-  //       // TODO: validate POST req success
-  //       router.push("/transaction_success");
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error:", error);
-  //     });
-  // };
 
   const renderPaymentBody = () => {
     switch (paymentType) {
@@ -217,6 +189,7 @@ export default function Home() {
               }}
               paymentHandle={paymentHandle}
               paymentAmount={paymentAmount.slice(1)}
+              userDetails={userDetails}
             />,
             document.body
           )}

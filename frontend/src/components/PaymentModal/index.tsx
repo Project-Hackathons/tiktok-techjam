@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "@/styles/PaymentModal.module.css";
 
-const PaymentModal = ({ hideModal }: any) => {
+const PaymentModal = ({ hideModal, paymentHandle, paymentAmount }: any) => {
   const handleBackgroundClick = () => {
     hideModal();
   };
@@ -12,7 +12,9 @@ const PaymentModal = ({ hideModal }: any) => {
   return (
     <div className={styles.modalBackground} onClick={handleBackgroundClick}>
       <div className={styles.modalCard} onClick={handleCardClick}>
-        <p>This is the confirmation modal.</p>
+        <p>
+          You are paying {paymentHandle} {paymentAmount}.
+        </p>
       </div>
     </div>
   );

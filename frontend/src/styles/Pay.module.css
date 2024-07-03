@@ -130,6 +130,14 @@
   font-weight: 300;
 }
 
+.paymentAmountInput {
+  background-color: rgba(0, 0, 0, 0);
+  color: white;
+  font-size: 30px;
+  width: 200px;
+  text-align: right;
+}
+
 /* .formItemContainer {
   display: flex;
   flex-direction: row;

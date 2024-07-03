@@ -32,6 +32,7 @@ export default function Home() {
   const [userDetails, setUserDetails] = useState<UserType>();
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentHandle, setPaymentHandle] = useState("");
+  const [paymentAmount, setPaymentAmount] = useState("");
   const router = useRouter();
 
   const [docEnv, setDocEnv] = useState(false);
@@ -158,7 +159,7 @@ export default function Home() {
       <div className={styles.headingContainer}>Transfer</div>
       <div className={styles.balanceContainer}>
         <div className={styles.transferableTitle}>Balance</div>
-        <div className={styles.transferableValue}>{userDetails?.balance}</div>
+        <div className={styles.transferableValue}>${userDetails?.balance}</div>
       </div>
       <Flex w="117%" bg="#0a1640" justify="space-between" py="20px">
         <Box textColor="grey" px="30px" textAlign="center">
@@ -168,18 +169,20 @@ export default function Home() {
             SGD
           </Text>
         </Box>
-        <NumberInput
-          defaultValue={0}
-          precision={2}
-          textColor="white"
-          width="125px"
-          size="lg"
-          min={0}
-          max={userDetails?.balance}
-          focusBorderColor="#0a1640"
-        >
-          <NumberInputField border="none" fontSize="xl" />
-        </NumberInput>
+        <input
+          type="text"
+          id="amountInput"
+          className={styles.paymentAmountInput}
+          value={paymentAmount}
+          placeholder="0.00"
+          onChange={(e) => {
+            const inputAmount = e.target.value;
+            const regex = /^\d*\.?\d{0,2}$/;
+            if (regex.test(inputAmount) || inputAmount === "") {
+              setPaymentAmount(inputAmount);
+            }
+          }}
+        />
       </Flex>
       <div className={styles.formContainer}>
         <div className={styles.typeContainer}>
@@ -206,6 +209,7 @@ export default function Home() {
                 setShowPaymentModal(false);
               }}
               paymentHandle={paymentHandle}
+              paymentAmount={paymentAmount}
             />,
             document.body
           )}

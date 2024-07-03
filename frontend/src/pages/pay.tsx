@@ -87,7 +87,7 @@ export default function Home() {
     switch (paymentType) {
       case 0:
         return (
-          <div className={styles.searchContainer}>
+          <>
             {/* TODO: add icon, etc */}
             <input
               type="text"
@@ -96,37 +96,39 @@ export default function Home() {
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search username"
             />
-            <div className={styles.usersContainer}>
-              {userList
-                .filter(
-                  (user) =>
-                    user.name.toLowerCase().includes(search.toLowerCase()) ||
-                    user.username.toLowerCase().includes(search.toLowerCase())
-                )
-                .map((type) => (
-                  <div
-                    key={type.username}
-                    className={styles.user}
-                    onClick={() => {
-                      setPaymentHandle(type.username);
-                      setShowPaymentModal(true);
-                    }}
-                  >
-                    <Avatar name={type.name}></Avatar>
-                    <div className={styles.userDetails}>
-                      <div className={styles.name}>{type.name}</div>
-                      <div
-                        className={styles.username}
-                      >{`@${type.username}`}</div>
+            <div className={styles.searchContainer}>
+              <div className={styles.usersContainer}>
+                {userList
+                  .filter(
+                    (user) =>
+                      user.name.toLowerCase().includes(search.toLowerCase()) ||
+                      user.username.toLowerCase().includes(search.toLowerCase())
+                  )
+                  .map((type) => (
+                    <div
+                      key={type.username}
+                      className={styles.user}
+                      onClick={() => {
+                        setPaymentHandle(type.username);
+                        setShowPaymentModal(true);
+                      }}
+                    >
+                      <Avatar name={type.name}></Avatar>
+                      <div className={styles.userDetails}>
+                        <div className={styles.name}>{type.name}</div>
+                        <div
+                          className={styles.username}
+                        >{`@${type.username}`}</div>
+                      </div>
+                      <HiOutlineChevronRight
+                        size={28}
+                        style={{ marginLeft: "auto" }}
+                      />
                     </div>
-                    <HiOutlineChevronRight
-                      size={28}
-                      style={{ marginLeft: "auto" }}
-                    />
-                  </div>
-                ))}
+                  ))}
+              </div>
             </div>
-          </div>
+          </>
         );
       case 1:
         return (

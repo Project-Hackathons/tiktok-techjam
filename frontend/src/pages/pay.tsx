@@ -15,6 +15,7 @@ import { Scanner } from "@yudiel/react-qr-scanner";
 
 import { HiOutlineChevronRight } from "react-icons/hi2";
 import { userInfo, UserType } from "./api/userInfo";
+import { createPortal } from "react-dom";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,6 +30,14 @@ export default function Home() {
   const [search, setSearch] = useState("");
   const [userDetails, setUserDetails] = useState<UserType>();
   const router = useRouter();
+
+  const [docEnv, setDocEnv] = useState(false);
+
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      setDocEnv(true);
+    }
+  }, []);
 
   useEffect(() => {
     const getUserInfo = async () => {
@@ -180,6 +189,13 @@ export default function Home() {
           ))}
         </div>
         {renderPaymentBody()}
+        {docEnv &&
+          createPortal(
+            <div className={styles.confirmationModal}>
+              <p>This child is placed in the document body.</p>
+            </div>,
+            document.body
+          )}
       </div>
     </Flex>
   );

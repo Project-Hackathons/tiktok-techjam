@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Head from "next/head";
 import {
   Flex,
@@ -18,66 +18,80 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import GiftBox from "@/components/GiftBox";
+import { userInfo, UserType, Reward } from "./api/userInfo";
+
+type ModalStateType = {
+  rid: number;
+  modal_opened: boolean;
+  ticket_redeemed: boolean;
+};
 
 const Rewards = () => {
-  const rewardList: rewardType[] = [
-    { rewardMessage: "Cashback", rewardAmount: 0.5 },
-    { rewardMessage: "Tiktok Shop Voucher", rewardAmount: 5 },
-    { rewardMessage: "Amazon Voucher", rewardAmount: 5 },
-    { rewardMessage: "Cashback", rewardAmount: 0.6 },
-    { rewardMessage: "Cashback", rewardAmount: 0.8 },
-    { rewardMessage: "Tiktok Shop Voucher", rewardAmount: 3 },
-    { rewardMessage: "Cashback", rewardAmount: 1 },
-    { rewardMessage: "Amazon Voucher", rewardAmount: 10 },
-    { rewardMessage: "Cashback", rewardAmount: 0.5 },
-    { rewardMessage: "Tiktok Shop Voucher", rewardAmount: 5 },
-    { rewardMessage: "Amazon Voucher", rewardAmount: 5 },
-    { rewardMessage: "Cashback", rewardAmount: 0.6 },
-    { rewardMessage: "Cashback", rewardAmount: 0.8 },
-    { rewardMessage: "Tiktok Shop Voucher", rewardAmount: 3 },
-    { rewardMessage: "Cashback", rewardAmount: 1 },
-    { rewardMessage: "Amazon Voucher", rewardAmount: 10 },
-  ];
-  const [modalState, setModalState] = useState(
-    rewardList.map(() => {
-      return { modal_opened: false, ticket_redeemed: false };
-    })
-  );
+  const [rewardList, setRewardList] = useState<Reward[]>();
+  const [modalState, setModalState] = useState<ModalStateType[]>();
 
-  interface rewardType {
-    rewardMessage: string;
-    rewardAmount: number;
-  }
+  useEffect(() => {
+    getUserInfo();
+  }, []);
 
-  const handleOpen = (index: any) => {
-    const newState = modalState.map((state, i) =>
-      i === index
-        ? { modal_opened: true, ticket_redeemed: state.ticket_redeemed }
-        : state
+  const getUserInfo = async () => {
+    console.log("endpoint called");
+    let userDetails: UserType = await userInfo();
+    setRewardList(() => {
+      return userDetails.rewards.filter((value) => value.claimed == 0);
+    });
+    setModalState(
+      userDetails.rewards.map((value) => {
+        return {
+          rid: value.rid,
+          modal_opened: false,
+          ticket_redeemed: false,
+        };
+      })
+    );
+  };
+
+  const handleOpen = (index: number, rid: number) => {
+    console.log(rid);
+    const newState = modalState?.map<any>((state, i) =>
+      i === index ? { ...state, modal_opened: true } : state
     );
     setModalState(newState);
   };
 
-  const handleClose = (index: any) => {
-    const newState = modalState.map((state, i) =>
-      i === index
-        ? { modal_opened: false, ticket_redeemed: state.ticket_redeemed }
-        : state
-    );
-    setModalState(newState);
+  const handleClose = (index: any, is_ticket_redeemed: boolean) => {
+    if (!is_ticket_redeemed) {
+      const newState = modalState?.map((state, i) =>
+        i === index ? { ...state, modal_opened: false } : state
+      );
+      setModalState(newState);
+    } else {
+      //call endpoint and reupdate all states
+      getUserInfo();
+    }
   };
 
-  const handleRedeemTicket = (index: any) => {
-    const newState = modalState.map((state, i) =>
-      i === index
-        ? { modal_opened: state.modal_opened, ticket_redeemed: true }
-        : state
+  const handleRedeemTicket = (index: any, rid: number) => {
+    const newState = modalState?.map((state, i) =>
+      i === index ? { ...state, ticket_redeemed: true } : state
     );
     setModalState(newState);
-  };
 
-  const deleteReward = (index: any) => {
-    //call api to delete reward from db
+    // delete reward from db
+    const deleteReward = async () => {
+      try {
+        const response = await fetch(`http://152.42.182.247:5000/claim/${rid}`);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const result = await response.json();
+        console.log(`rid${rid} has been removed from db`);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    deleteReward();
   };
 
   return (
@@ -105,77 +119,91 @@ const Rewards = () => {
               Total Rewards
             </Text>
             <Text pt="10px" textAlign="center" color="white" fontSize="l">
-              {`You have ${rewardList.length} unopened rewards.`}
+              {`You have ${rewardList?.length} unopened rewards.`}
             </Text>
           </Flex>
-          <Flex w="100%" justify="space-around" flexWrap="wrap" rowGap="20px">
-            {rewardList.map((value, index) => {
+          <Flex
+            w="100%"
+            justify="space-between"
+            flexWrap="wrap"
+            rowGap="20px"
+            px="30px"
+          >
+            {rewardList?.map((value, index) => {
               return (
                 <Box
                   key={index}
-                  w="42%"
+                  w="45%"
                   transition="transform 0.3s ease"
                   _hover={{ cursor: "pointer", transform: "scale(1.1)" }}
                 >
                   <Image
-                    src={
-                      modalState[index].ticket_redeemed
-                        ? "/rewards/tick.avif"
-                        : `/rewards/reward${(index % 3) + 1}.avif`
-                    }
+                    src={`/rewards/reward${(index % 3) + 1}.avif`}
                     alt="rewardImg"
                     borderRadius="20px"
-                    onClick={() => handleOpen(index)}
+                    onClick={() => handleOpen(index, value.rid)}
                   />
                   <Modal
                     isOpen={modalState[index].modal_opened}
-                    onClose={() => handleClose(index)}
+                    onClose={() =>
+                      handleClose(index, modalState[index].ticket_redeemed)
+                    }
                     isCentered
                     size="xs"
                   >
                     <ModalOverlay />
-                    <ModalContent mx="30px" bgColor="#070F2B" textColor="white">
+                    <ModalContent
+                      h="313px"
+                      mx="30px"
+                      bgColor="#070F2B"
+                      textColor="white"
+                    >
                       <ModalHeader>Congratulations!</ModalHeader>
-                      <ModalCloseButton borderColor="none" />
+                      {!modalState[index].ticket_redeemed && (
+                        <ModalCloseButton borderColor="none" />
+                      )}
                       {modalState[index].ticket_redeemed ? (
                         <ModalBody>
-                          <VStack spacing="20px">
+                          <Flex
+                            gap="20px"
+                            flexDir="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            height="100%"
+                          >
                             <Image
                               src="/rewards/rewardLogo.svg"
                               alt="rewardLogo"
-                              boxSize="50px"
+                              boxSize="80px"
                             ></Image>
                             <Text>
-                              {`You have won $${value.rewardAmount} worth of ${value.rewardMessage}!`}
+                              {`You have won \$ ${value.amount} worth of ${value.message}!`}
                             </Text>
-                          </VStack>
+                          </Flex>
                         </ModalBody>
                       ) : (
                         <GiftBox
                           handleClick={handleRedeemTicket}
                           index={index}
+                          rid={value.rid}
                         />
                       )}
 
                       <ModalFooter>
                         <Flex w="100%" justify="space-evenly">
-                          <Button
-                            bgGradient="linear(to-r, #ff0050, 45%, #00f2ea)"
-                            mr={3}
-                            onClick={() => handleClose(index)}
-                          >
-                            <Text color="white" fontWeight="bold">
-                              Close
-                            </Text>
-                          </Button>
                           {modalState[index].ticket_redeemed && (
                             <Button
-                              bgGradient="linear(to-l, #ff0050, 45%, #00f2ea)"
+                              bgGradient="linear(to-r, #ff0050, 45%, #00f2ea)"
                               mr={3}
-                              onClick={() => deleteReward(index)}
+                              onClick={() =>
+                                handleClose(
+                                  index,
+                                  modalState[index].ticket_redeemed
+                                )
+                              }
                             >
                               <Text color="white" fontWeight="bold">
-                                Redeem
+                                Close
                               </Text>
                             </Button>
                           )}

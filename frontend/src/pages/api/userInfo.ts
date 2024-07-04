@@ -2,6 +2,7 @@ export interface UserType {
   balance: number;
   display_name: string;
   email: string;
+  rewards: Reward[];
   transactions: Transaction[];
   uid: string;
   username: string;
@@ -18,6 +19,13 @@ interface Account {
   balance_after: number;
   balance_before: number;
   uid: number;
+}
+
+export interface Reward {
+  amount: number;
+  claimed: number;
+  message: string;
+  rid: number;
 }
 
 export const userInfo = async (): Promise<UserType> => {

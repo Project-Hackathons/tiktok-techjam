@@ -35,7 +35,6 @@ const Rewards = () => {
   }, []);
 
   const getUserInfo = async () => {
-    console.log("endpoint called");
     let userDetails: UserType = await userInfo();
     setRewardList(() => {
       return userDetails.rewards.filter((value) => value.claimed == 0);
@@ -52,7 +51,6 @@ const Rewards = () => {
   };
 
   const handleOpen = (index: number, rid: number) => {
-    console.log(rid);
     const newState = modalState?.map<any>((state, i) =>
       i === index ? { ...state, modal_opened: true } : state
     );

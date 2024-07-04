@@ -36,7 +36,7 @@ export default function Home() {
 
   useEffect(() => {
     const getUserInfo = async () => {
-      let userDeets = await userInfo();
+      let userDeets = await userInfo("lanjiao"); //todo @euan
       setUserDetails(userDeets);
     };
     getUserInfo();

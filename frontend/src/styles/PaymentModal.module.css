@@ -1,0 +1,56 @@
+.modalBackground {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modalCard {
+  width: 340px;
+  height: 380px;
+  background-color: var(--color-white);
+  border-radius: var(--border-radius);
+  padding: 32px 16px 40px 16px;
+  background-color: var(--color-darkerBlack);
+  color: var(--color-white);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.largeText {
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 140%;
+  color: var(--color-teal);
+}
+
+.medText {
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 140%;
+}
+
+.confirmTransactionCta {
+  margin-top: 20px;
+  background-color: var(--color-teal);
+  padding: 16px;
+  width: fit-content;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 140%;
+  border-radius: var(--border-radius);
+}
+
+.confirmTransactionCta:hover {
+  cursor: pointer;
+}

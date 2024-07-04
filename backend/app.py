@@ -18,9 +18,36 @@ def insert_user(username, email, display_name, balance=0):
     conn.commit()
     return cursor.lastrowid
 
+def give_default_rewards(uid):
+    default_rewards = [
+                        { "rewardMessage": "Cashback", "rewardAmount": 0.5 },
+                        { "rewardMessage": "Tiktok Shop Voucher", "rewardAmount": 5 },
+                        { "rewardMessage": "Amazon Voucher", "rewardAmount": 5 },
+                        { "rewardMessage": "Cashback", "rewardAmount": 0.6 },
+                        { "rewardMessage": "Cashback", "rewardAmount": 0.8 },
+                        { "rewardMessage": "Tiktok Shop Voucher", "rewardAmount": 3 },
+                        { "rewardMessage": "Cashback", "rewardAmount": 1 },
+                        { "rewardMessage": "Amazon Voucher", "rewardAmount": 10 },
+                        { "rewardMessage": "Cashback", "rewardAmount": 0.5 },
+                        { "rewardMessage": "Tiktok Shop Voucher", "rewardAmount": 5 },
+                        { "rewardMessage": "Amazon Voucher", "rewardAmount": 5 },
+                        { "rewardMessage": "Cashback", "rewardAmount": 0.6 },
+                        { "rewardMessage": "Cashback", "rewardAmount": 0.8 },
+                        { "rewardMessage": "Tiktok Shop Voucher", "rewardAmount": 3 },
+                        { "rewardMessage": "Cashback", "rewardAmount": 1 },
+                        { "rewardMessage": "Amazon Voucher", "rewardAmount": 10 },
+                      ]
+    for reward in default_rewards:
+        message = reward["rewardMessage"]
+        amount = reward["rewardAmount"]
+        cursor.execute("insert into rewards (message, amount, claimed, uid) values (?,?,?,?)", (message, amount, False, uid))
+    conn.commit()
+
 def insert_user_if_not_exist(username, email, display_name, balance):
     if not username_exists(username):
-        return insert_user(username, email, display_name, balance)
+        uid = insert_user(username, email, display_name, balance)
+        give_default_rewards(uid)
+        return uid
     return -1
 
 def address_exists(address):
@@ -32,7 +59,7 @@ def insert_store(address, lat, lng, name, withdrawal):
     conn.commit()
     return cursor.lastrowid
 
-def get_user(uid):
+def get_tx(uid):
     cursor.execute("""select u.uid, u.username, u.email, u.display_name, u.balance, t.tid, t.to_uid, t.to_balance_before, t.to_balance_after, t.from_uid, t.from_balance_before, t.from_balance_after, t.fee, t.timestamp 
                         from users u
                         left join transactions t on u.uid = t.to_uid or u.uid = t.from_uid
@@ -44,12 +71,44 @@ def get_user(uid):
 def hello_world():
     return "{'status': 'alive'}"
 
+@app.route('/claim/<rid>')
+def claim(rid):
+    cursor.execute("select message, amount, claimed, uid from rewards where rid = ?", (rid,))
+    reward = cursor.fetchone()
+    if reward is None:
+        return {"error": "reward not found"}, 200
+    message = reward[0]
+    amount = reward[1]
+    claimed = reward[2]
+    uid = reward[3]
+    if claimed:
+        return {"error": "reward already claimed"}, 200
+    cursor.execute("update rewards set claimed = 1 where rid = ?", (rid,))
+    cursor.execute("update users set balance = balance + ? where uid = ?", (amount, uid))
+    conn.commit()
+    return {"status": "claimed", "message": message, "amount": amount}, 200
+
+def get_rewards(uid):
+    cursor.execute("select rid, message, amount, claimed from rewards where uid = ?", (uid,))
+    rewards = cursor.fetchall()
+    rewards_json = []
+    for reward in rewards:
+        reward_dict = {
+                'rid': reward[0],
+                'message': reward[1],
+                'amount': reward[2],
+                'claimed': reward[3]
+        }
+        rewards_json.append(reward_dict)
+    return rewards_json
+    
 @app.route('/user/<uid>')
 def user(uid):
-    data = get_user(uid), 200
+    data = get_tx(uid)
+    rewards = get_rewards(uid)
     if data is None:
         return jsonify({'error': 'user not found'}), 404
-    data = data[0]
+    data = data
     txs = []
     for i in data:
         print(i)
@@ -75,7 +134,8 @@ def user(uid):
             'email': data[2],
             'display_name': data[3],
             'balance': data[4],
-            'transactions': txs
+            'transactions': txs,
+            'rewards': rewards
             }), 200
 
 @app.route('/create_user', methods=['POST'])
@@ -123,14 +183,7 @@ def create_store():
     return {"sid": insert_store(address, lat, lng, name, withdrawal)}, 200
 
 fee = 1
-@app.route('/transfer', methods=['POST'])
-def transfer():
-    data = request.json
-    if data is None:
-        return {"tid": -1}, 200
-    to_uid = data.get("to")
-    from_uid = data.get("from")
-    amount = data.get("amount")
+def perform_transfer(to_uid, from_uid, amount):
     cursor.execute("select balance from users where uid = ?", (from_uid,))
     from_bal = cursor.fetchone()
     if from_bal is None:
@@ -154,7 +207,7 @@ def transfer():
                             (?,?,?,?,?,?,?,?)
                    """, (to_uid, to_bal, to_aft_bal, from_uid, from_bal, from_aft_bal, fee, int(round(datetime.now().timestamp()))))
     conn.commit()
-    return jsonify({
+    return {
         'tid': cursor.lastrowid,
         'to': {
             'uid': to_uid,
@@ -167,23 +220,16 @@ def transfer():
             'balance_after': from_aft_bal 
             },
         'fee': fee
-        })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        }
+@app.route('/transfer', methods=['POST'])
+def transfer():
+    data = request.json
+    if data is None:
+        return {"tid": -1}, 200
+    to_uid = data.get("to")
+    from_uid = data.get("from")
+    amount = data.get("amount")
+    return jsonify(perform_transfer(to_uid, from_uid, amount))
 
 def init_db():
     cursor.execute("""create table if not exists users (
@@ -214,8 +260,22 @@ def init_db():
                             name text not null,
                             withdrawal int not null
                     )""")
-    print('inserted', insert_user_if_not_exist('alex', 'alex@gmail.com', 'Alex Lim', balance=100))
-    print('inserted', insert_user_if_not_exist('alex', 'alex@gmail.com', 'Alex Lim', balance=100))
+    # create table for rewards
+    cursor.execute("""create table if not exists rewards (
+                            rid integer primary key autoincrement,
+                            message text not null,
+                            amount real not null,
+                            claimed boolean not null,
+                            uid integer not null,
+                            foreign key (uid) references users (uid)
+                    )""")
+    
+    alex = insert_user_if_not_exist('alex', 'alex@gmail.com', 'Alex Lim', balance=100)
+    jane = insert_user_if_not_exist('jane', 'jane@gmail.com', 'Jane Tan', balance=200)
+    print('inserted', alex)
+    print('inserted', jane)
+    if alex != -1 and jane != -1:
+        perform_transfer(alex, jane, 50)
     stores = [
         {
             "address": 'Singapore 467360',

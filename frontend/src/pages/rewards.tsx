@@ -142,9 +142,12 @@ const Rewards = () => {
                     onClick={() => handleOpen(index, value.rid)}
                   />
                   <Modal
-                    isOpen={modalState[index].modal_opened}
+                    isOpen={modalState ? modalState[index].modal_opened : false}
                     onClose={() =>
-                      handleClose(index, modalState[index].ticket_redeemed)
+                      handleClose(
+                        index,
+                        modalState ? modalState[index].ticket_redeemed : false
+                      )
                     }
                     isCentered
                     size="xs"
@@ -157,10 +160,10 @@ const Rewards = () => {
                       textColor="white"
                     >
                       <ModalHeader>Congratulations!</ModalHeader>
-                      {!modalState[index].ticket_redeemed && (
+                      {modalState && !modalState[index].ticket_redeemed && (
                         <ModalCloseButton borderColor="none" />
                       )}
-                      {modalState[index].ticket_redeemed ? (
+                      {modalState && modalState[index].ticket_redeemed ? (
                         <ModalBody>
                           <Flex
                             gap="20px"
@@ -189,7 +192,7 @@ const Rewards = () => {
 
                       <ModalFooter>
                         <Flex w="100%" justify="space-evenly">
-                          {modalState[index].ticket_redeemed && (
+                          {modalState && modalState[index].ticket_redeemed && (
                             <Button
                               bgGradient="linear(to-r, #ff0050, 45%, #00f2ea)"
                               mr={3}

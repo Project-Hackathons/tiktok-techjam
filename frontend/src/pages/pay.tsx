@@ -68,22 +68,22 @@ export default function Home() {
                       user.name.toLowerCase().includes(search.toLowerCase()) ||
                       user.username.toLowerCase().includes(search.toLowerCase())
                   )
-                  .map((type) => (
+                  .map((user) => (
                     <div
-                      key={type.username}
+                      key={user.username}
                       className={`${styles.user} ${
-                        type.uid == paymentUid ? styles.userSelected : ""
+                        user.uid == paymentUid ? styles.userSelected : ""
                       }`}
                       onClick={() => {
-                        setPaymentUid(type.uid);
+                        setPaymentUid(user.uid);
                       }}
                     >
-                      <Avatar name={type.name}></Avatar>
+                      <Avatar name={user.name}></Avatar>
                       <div className={styles.userDetails}>
-                        <div className={styles.name}>{type.name}</div>
+                        <div className={styles.name}>{user.name}</div>
                         <div
                           className={styles.username}
-                        >{`@${type.username}`}</div>
+                        >{`@${user.username}`}</div>
                       </div>
                       <HiOutlineChevronRight
                         size={28}

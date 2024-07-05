@@ -64,7 +64,7 @@ const Home = () => {
               fontWeight="bold"
               color="white"
             >
-              SGD ${(Math.round(userData?.balance * 100) / 100).toFixed(2)}
+              SGD ${(Math.round(userData ? userData.balance * 100 : 0) / 100).toFixed(2)}
             </Text>
             <HStack w="100%" display="flex">
               <Button flex={1} variant="solid" _hover={{ bg: "gray.300" }} onClick={()=>router.push("/receive")}>

@@ -1,5 +1,5 @@
 import TransactionList from "@/components/TransactionList";
-import { Flex, VStack, Text, HStack, Button } from "@chakra-ui/react";
+import { Flex, VStack, Text, HStack, Button, Skeleton } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { User } from "../../types";
 import { useRouter } from "next/router";
@@ -14,6 +14,7 @@ const Home = () => {
       const response = await fetch("http://152.42.182.247:5000/user/1");
       if (!response.ok) {
         throw new Error("Fetching Error");
+        setIsLoading(true)
       }
       const data = await response.json();
       setUserData(data);
@@ -34,6 +35,8 @@ const Home = () => {
           </Text>
         </Flex>
 
+        {
+        loading? <Flex w="80%" flexDir="column"><Skeleton h="8rem" w="100%" borderRadius="1rem" colorScheme="black"/><Skeleton h="15rem" mt="3rem" w="100%" borderRadius="1rem" colorScheme="black"/></Flex>: <>
         <Flex
           bgGradient="linear(to-r, #ff0050, 45%, #00f2ea)"
           w="80%"
@@ -61,7 +64,7 @@ const Home = () => {
               fontWeight="bold"
               color="white"
             >
-              SGD ${userData?.balance}
+              SGD ${(Math.round(userData?.balance * 100) / 100).toFixed(2)}
             </Text>
             <HStack w="100%" display="flex">
               <Button flex={1} variant="solid" _hover={{ bg: "gray.300" }}>
@@ -80,7 +83,9 @@ const Home = () => {
           </VStack>
         </Flex>
 
-        <TransactionList />
+        <TransactionList /></>
+      }
+        
       </VStack>
     </Flex>
   );

@@ -7,10 +7,28 @@ import type { LatLngBounds, LatLngTuple } from "leaflet";
 // import MarkerClusterGroup from "@changey/react-leaflet-markercluster";
 import { debounce } from "lodash";
 import * as L from "leaflet";
-import { Flex, Text, Button, VStack } from "@chakra-ui/react";
+import {
+  Flex,
+  Text,
+  Button,
+  VStack,
+  HStack,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
+  Icon,
+} from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 
 import axios from "axios";
+import { BiMoneyWithdraw } from "react-icons/bi";
+import { FaMoneyBill } from "react-icons/fa";
+import { useRouter } from "next/router";
 
 export interface Store {
   address: string;
@@ -37,61 +55,8 @@ const getDirection = (position: LatLngTuple) => {
   window.open(url, "_blank");
 };
 
-const MemoizedMarker = memo(
-  ({ position, store }: { position: LatLngTuple; store: Store }) => (
-    <Marker position={position} icon={RedMarker}>
-      <Popup>
-        <Flex
-          justifyContent="center"
-          alignItems="start"
-          flexDirection="column"
-          gap={0}
-          height="8rem"
-          width="12rem"
-        >
-          <VStack
-            gap="0.25rem"
-            justifyContent="start"
-            alignItems="start"
-            display="flex"
-          >
-            <Text as="span" noOfLines={1} fontSize="sm" fontWeight="semibold">
-              {store.name}
-            </Text>
-            <Text as="span" noOfLines={1} fontSize="sm" color="grey">
-              {store.address}
-            </Text>
-            {store.withdrawal == 0 ? (
-              <Text as="span" noOfLines={1} fontSize="sm" color="grey">
-                (Withdrawal unavailable)
-              </Text>
-            ) : (
-              <Text as="span" noOfLines={1} fontSize="sm" color="grey">
-                (Withdrawal up to ${store.withdrawal})
-              </Text>
-            )}
-          </VStack>
-
-          <Button
-            onClick={() => getDirection(position)}
-            alignSelf="end"
-            size="sm"
-            bg="#69C9D0"
-            color="white"
-            colorScheme="blue"
-            rightIcon={<ArrowForwardIcon />}
-            mt="1rem"
-          >
-            Directions
-          </Button>
-        </Flex>
-      </Popup>
-    </Marker>
-  )
-);
-MemoizedMarker.displayName = "MemoizedMarker";
-
-const ShowMarkers = ({stores}:{ stores: Store[]}) => {
+const ShowMarkers = ({ stores }: { stores: Store[] }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [currZoom, setCurrZoom] = useState(50);
   const [mapBounds, setMapBounds] = useState<LatLngBounds | null>(null);
 
@@ -113,8 +78,121 @@ const ShowMarkers = ({stores}:{ stores: Store[]}) => {
     return mapBounds ? mapBounds.contains([store.lat, store.lng]) : false;
   });
 
+  const router = useRouter();
+
+  const MemoizedMarker = memo(
+    ({ position, store }: { position: LatLngTuple; store: Store }) => (
+      <Marker position={position} icon={RedMarker}>
+        <Popup>
+          <Flex
+            justifyContent="center"
+            alignItems="start"
+            flexDirection="column"
+            gap={0}
+            height="8rem"
+            width="14rem"
+          >
+            <VStack
+              gap="0.25rem"
+              justifyContent="start"
+              alignItems="start"
+              display="flex"
+            >
+              <Text as="span" noOfLines={1} fontSize="sm" fontWeight="semibold">
+                {store.name}
+              </Text>
+              <Text as="span" noOfLines={1} fontSize="sm" color="grey">
+                {store.address}
+              </Text>
+              {store.withdrawal == 0 ? (
+                <Text as="span" noOfLines={1} fontSize="sm" color="grey">
+                  (Withdrawal unavailable)
+                </Text>
+              ) : (
+                <Text as="span" noOfLines={1} fontSize="sm" color="grey">
+                  (Withdrawal up to ${store.withdrawal})
+                </Text>
+              )}
+            </VStack>
+            <HStack w="100%" display="flex">
+              {" "}
+              <Button
+                flex={1}
+                onClick={() => {
+                  onOpen();
+                }}
+                alignSelf="end"
+                size="sm"
+                color="#37B7C3"
+                variant="outline"
+                colorScheme="blue"
+                mt="1rem"
+              >
+                Transact
+              </Button>{" "}
+              <Button
+                flex={1}
+                onClick={() => getDirection(position)}
+                alignSelf="end"
+                size="sm"
+                bg="#69C9D0"
+                color="white"
+                colorScheme="blue"
+                rightIcon={<ArrowForwardIcon />}
+                mt="1rem"
+              >
+                Directions
+              </Button>
+            </HStack>
+          </Flex>
+        </Popup>
+      </Marker>
+    )
+  );
+  MemoizedMarker.displayName = "MemoizedMarker";
   return (
     <>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+        <ModalOverlay />
+        <ModalContent maxW="380px">
+          <ModalHeader>What would you like to do?</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb="3rem">
+            <VStack gap={"2rem"}>
+              <Button
+                w="90%"
+                h="9rem"
+                variant="outline"
+                boxShadow="lg"
+                onClick={() => router.push("/receive")}
+              >
+                <Text fontSize="x-large">
+                  <Flex w="100%" justifyContent="center" pb="1rem">
+                    <Icon boxSize={10} as={FaMoneyBill} />
+                  </Flex>
+                  Top-up
+                </Text>
+              </Button>
+
+              <Button
+                w="90%"
+                h="9rem"
+                variant="outline"
+                boxShadow="lg"
+                onClick={() => router.push("/pay")}
+              >
+                <Text fontSize="x-large">
+                  <Flex w="100%" justifyContent="center" pb="1rem">
+                    <Icon boxSize={10} as={BiMoneyWithdraw} />
+                  </Flex>
+                  Withdraw
+                </Text>
+              </Button>
+            </VStack>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+
       {currZoom > 12 ? (
         <>
           {visibleMarkers.map((store) => (

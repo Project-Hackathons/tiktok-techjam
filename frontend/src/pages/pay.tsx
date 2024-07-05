@@ -41,6 +41,7 @@ export default function Home() {
     };
     getUserInfo();
   }, []);
+
   const userList = [
     { name: "Joseph Son", username: "joseph_sonny" },
     { name: "Friend number 1", username: "friendly_man" },
@@ -73,7 +74,6 @@ export default function Home() {
                       className={styles.user}
                       onClick={() => {
                         setPaymentHandle(type.username);
-                        setShowPaymentModal(true);
                       }}
                     >
                       <Avatar name={type.name}></Avatar>
@@ -90,6 +90,21 @@ export default function Home() {
                     </div>
                   ))}
               </div>
+            </div>
+            <div
+              className={`${styles.confirmTransactionButton} ${
+                !paymentHandle ||
+                !paymentAmount ||
+                parseFloat(paymentAmount.slice(1)) >
+                  (userDetails ? userDetails.balance : Infinity)
+                  ? styles.confirmTransactionButtonDisabled
+                  : ""
+              }`}
+              onClick={() => {
+                setShowPaymentModal(true);
+              }}
+            >
+              Confirm
             </div>
           </>
         );
@@ -159,11 +174,7 @@ export default function Home() {
           }}
         />
       </Flex>
-      <div
-        className={`${styles.formContainer} ${
-          paymentAmount == "" ? styles.formContainerDisabled : ""
-        }`}
-      >
+      <div className={styles.formContainer}>
         <div className={styles.typeContainer}>
           {paymentTypes.map((type) => (
             <div

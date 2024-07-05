@@ -47,14 +47,6 @@
   background-color: var(--color-darkerBlack);
   gap: 16px;
 }
-.formContainerDisabled {
-  pointer-events: none;
-  opacity: 1;
-  filter: grayscale(20%);
-}
-.formContainerDisabled * {
-  color: #aaa !important;
-}
 
 .typeContainer {
   display: flex;
@@ -144,6 +136,27 @@
   font-size: 30px;
   width: 200px;
   text-align: right;
+}
+
+.confirmTransactionButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  width: 100%;
+  font-size: 22px;
+  background-color: var(--color-teal);
+  border-radius: var(--border-radius);
+  text-align: center;
+  font-weight: 600;
+  color: var(--color-white);
+}
+.confirmTransactionButtonDisabled {
+  background-color: #d3d3d3;
+  color: #a9a9a9;
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 /* .formItemContainer {

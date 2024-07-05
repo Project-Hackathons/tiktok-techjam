@@ -98,7 +98,7 @@
 .usersContainer {
   display: flex;
   flex-direction: column;
-  padding: 8px;
+  /* padding: 8px; */
 }
 
 .user {
@@ -109,13 +109,11 @@
   align-items: center;
   justify-content: start;
   gap: 12px;
+  padding: 8px;
+  border-radius: var(--border-radius);
 }
 .userSelected {
   background-color: rgba(0, 0, 0, 0.5);
-}
-
-.user:not(:last-child) {
-  border-bottom: 1px solid var(--color-grey);
 }
 
 .userDetails {

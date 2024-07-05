@@ -174,6 +174,9 @@ export default function Home() {
               setPaymentAmount(`$${inputAmount}`);
             }
           }}
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
         />
       </Flex>
       <div className={styles.formContainer}>

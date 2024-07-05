@@ -130,13 +130,13 @@ const Rewards = () => {
             {rewardList?.map((value, index) => {
               return (
                 <Box
-                  key={index}
+                  key={value.rid}
                   w="45%"
                   transition="transform 0.3s ease"
                   _hover={{ cursor: "pointer", transform: "scale(1.1)" }}
                 >
                   <Image
-                    src={`/rewards/reward${(index % 3) + 1}.avif`}
+                    src={`/rewards/reward${(value.rid % 3) + 1}.avif`}
                     alt="rewardImg"
                     borderRadius="20px"
                     onClick={() => handleOpen(index, value.rid)}

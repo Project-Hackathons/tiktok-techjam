@@ -280,7 +280,8 @@ const MapComponent = () => {
           <Flex
             position="fixed"
             bottom="20"
-            w="420px"
+            w="100%"
+            maxW="420px"
             zIndex={99}
             flexDirection="column"
             pr="1rem"

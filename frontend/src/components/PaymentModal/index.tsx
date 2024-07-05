@@ -55,11 +55,20 @@ const PaymentModal = ({
           <div className={styles.medText}>a grand total of</div>
           <div className={styles.largeText}>${paymentAmount}</div>
         </div>
-        <div
-          className={styles.confirmTransactionCta}
-          onClick={handleConfirmTransaction}
-        >
-          Confirm Transaction
+        <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
+          <div
+            className={styles.confirmTransactionCta}
+            onClick={handleConfirmTransaction}
+          >
+            Confirm
+          </div>
+          <div
+            className={styles.confirmTransactionCta}
+            style={{ backgroundColor: "red" }}
+            onClick={hideModal}
+          >
+            Cancel
+          </div>
         </div>
       </div>
     </div>

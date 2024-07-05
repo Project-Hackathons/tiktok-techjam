@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { User } from "../../types";
 import QRCode from "react-qr-code";
@@ -21,7 +21,7 @@ const Index = ({}: any) => {
 
   return (
     <Flex
-      bg="#070F2B"
+    bgGradient="linear(to-t, #ff0050, 35%, #00f2ea)"
       h="100vh"
       w="100%"
       style={{
@@ -29,21 +29,30 @@ const Index = ({}: any) => {
         justifyContent: "center",
         flexDirection: "column",
         gap: "30px",
-        paddingBottom: "26vh",
       }}
     >
-      <div
-        style={{
-          fontSize: "28px",
-          color: "white",
-          textAlign: "center",
-          fontWeight: 600,
-        }}
+      <Flex
+        bg="white"
+        p="3rem"
+        flexDir="column"
+        borderRadius="2rem"
+        alignItems="center"
+        mb="4rem"
       >
-        This is your QR code.
-        <br /> Keep it safe!
-      </div>
-      {userData && <QRCode value={userData.username} size={300} />}
+        {userData && (
+          <>
+            <QRCode value={userData.username} size={200} />
+            <Text
+              color="black"
+              fontWeight="semibold"
+              fontSize="x-large"
+              pt="1.5rem"
+            >
+              @{userData.username}
+            </Text>
+          </>
+        )}
+      </Flex>
     </Flex>
   );
 };

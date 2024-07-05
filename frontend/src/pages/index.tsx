@@ -13,8 +13,8 @@ const Home = () => {
     (async () => {
       const response = await fetch("http://152.42.182.247:5000/user/1");
       if (!response.ok) {
-        throw new Error("Fetching Error");
         setIsLoading(true)
+        throw new Error("Fetching Error");
       }
       const data = await response.json();
       setUserData(data);
@@ -67,7 +67,7 @@ const Home = () => {
               SGD ${(Math.round(userData?.balance * 100) / 100).toFixed(2)}
             </Text>
             <HStack w="100%" display="flex">
-              <Button flex={1} variant="solid" _hover={{ bg: "gray.300" }}>
+              <Button flex={1} variant="solid" _hover={{ bg: "gray.300" }} onClick={()=>router.push("/receive")}>
                 Top-up
               </Button>
               <Button

@@ -6,6 +6,7 @@ import styles from "@/styles/PaymentModal.module.css";
 const PaymentModal = ({
   hideModal,
   paymentHandle,
+  paymentUid,
   paymentAmount,
   userDetails,
 }: any) => {
@@ -22,8 +23,8 @@ const PaymentModal = ({
   const handleConfirmTransaction = () => {
     const accessToken = "<access_token>"; // TODO: replace with access token (from cookies?)
     const data = {
-      from: userDetails.username,
-      to: paymentHandle,
+      from: userDetails.uid,
+      to: paymentUid,
       amount: parseFloat(paymentAmount),
     };
 

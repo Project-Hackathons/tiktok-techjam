@@ -23,7 +23,7 @@ export default function Home() {
   const [search, setSearch] = useState("");
   const [userDetails, setUserDetails] = useState<UserType>();
   const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [paymentHandle, setPaymentHandle] = useState("");
+  const [paymentUid, setPaymentUid] = useState<Number | null>();
   const [paymentAmount, setPaymentAmount] = useState("");
 
   const [docEnv, setDocEnv] = useState(false);
@@ -43,8 +43,8 @@ export default function Home() {
   }, []);
 
   const userList = [
-    { name: "Joseph Son", username: "joseph_sonny" },
-    { name: "Friend number 1", username: "friendly_man" },
+    { name: "Joseph Son", username: "joseph_sonny", uid: 2 },
+    { name: "Friend number 1", username: "friendly_man", uid: 3 },
   ];
 
   const renderPaymentBody = () => {
@@ -71,9 +71,11 @@ export default function Home() {
                   .map((type) => (
                     <div
                       key={type.username}
-                      className={styles.user}
+                      className={`${styles.user} ${
+                        type.uid == paymentUid ? styles.userSelected : ""
+                      }`}
                       onClick={() => {
-                        setPaymentHandle(type.username);
+                        setPaymentUid(type.uid);
                       }}
                     >
                       <Avatar name={type.name}></Avatar>
@@ -93,7 +95,7 @@ export default function Home() {
             </div>
             <div
               className={`${styles.confirmTransactionButton} ${
-                !paymentHandle ||
+                !paymentUid ||
                 !paymentAmount ||
                 parseFloat(paymentAmount.slice(1)) >
                   (userDetails ? userDetails.balance : Infinity)
@@ -124,7 +126,7 @@ export default function Home() {
           <div className={styles.qrContainer}>
             <Scanner
               onScan={(result) => {
-                setPaymentHandle(result[0].rawValue);
+                setPaymentUid(parseInt(result[0].rawValue));
                 setShowPaymentModal(true);
               }}
             />
@@ -198,7 +200,12 @@ export default function Home() {
               hideModal={() => {
                 setShowPaymentModal(false);
               }}
-              paymentHandle={paymentHandle}
+              paymentUid={paymentUid}
+              paymentHandle={
+                userList.find((el) => {
+                  return el.uid === paymentUid;
+                })?.username
+              }
               paymentAmount={paymentAmount.slice(1)}
               userDetails={userDetails}
             />,

@@ -59,10 +59,17 @@ def address_exists(address):
     return cursor.fetchone() is not None
 
 def insert_store(address, lat, lng, name, withdrawal):
+    store_username = 'store_'+str(hash(address))
+    print("store_username", store_username)
+    store_user_id = insert_user_if_not_exist(store_username, store_username + "@gmail.com", name, withdrawal)
+
     cursor = conn.cursor()
-    cursor.execute("insert into stores (address, lat, lng, name, withdrawal) values (?,?,?,?,?)", (address, lat, lng, name, withdrawal))
+    cursor.execute("insert into stores (address, lat, lng, name, withdrawal, uid) values (?,?,?,?,?,?)", (address, lat, lng, name, withdrawal, store_user_id))
     conn.commit()
-    return cursor.lastrowid
+    store_id = cursor.lastrowid
+    # insert store owner as user
+    # hash the address to get a unique username
+    return store_id, store_user_id
 
 def get_tx(uid):
     cursor = conn.cursor()
@@ -167,7 +174,7 @@ def create_user():
 @app.route('/stores')
 def fetch_stores():
     cursor = conn.cursor()
-    cursor.execute("select address, lat, lng, name, withdrawal from stores")
+    cursor.execute("select address, lat, lng, name, withdrawal, uid from stores")
     stores = cursor.fetchall()
     stores_json = []
     for store in stores:
@@ -176,7 +183,8 @@ def fetch_stores():
                 'lat': store[1],
                 'lng': store[2],
                 'name': store[3],
-                'withdrawal': store[4]
+                'withdrawal': store[4],
+                'uid': store[5]
         }
         stores_json.append(store_dict)
     return jsonify(stores_json), 200
@@ -193,19 +201,10 @@ def create_store():
     withdrawal = data.get("withdrawal")
     if address_exists(address):
         return {"sid": -2}, 200
-    return {"sid": insert_store(address, lat, lng, name, withdrawal)}, 200
+    return {"sid": insert_store(address, lat, lng, name, withdrawal)[0]}, 200
 
-def perform_transfer(from_uid, to_uid, amount, tx_type_str=''):
-    fee = 0
-    if (to_uid == 1):
-        tx_type = 0 # withdrawal
-        if (tx_type_str != ''):
-            tx_type = tx_types.index(tx_type_str)
-    elif (from_uid == 1):
-        tx_type = 1 # topup
-    else:
-        tx_type = 5 # transfer
-        fee = 1
+def perform_transfer(from_uid, to_uid, amount, tx_type_str='DIRECT-TRANSFER'):
+    fee = (1 if tx_type_str == 'DIRECT-TRANSFER' else 0)
     print("performing transfer", from_uid, to_uid, amount)
     cursor = conn.cursor()
     cursor.execute("select balance from users where uid = ?", (from_uid,))
@@ -226,12 +225,13 @@ def perform_transfer(from_uid, to_uid, amount, tx_type_str=''):
     cursor.execute("update users set balance = ? where uid = ?", (from_aft_bal, from_uid))
     cursor.execute("update users set balance = ? where uid = ?", (to_aft_bal, to_uid))
 
+    tx_type = tx_types.index(tx_type_str)
     cursor.execute("""insert into transactions
                             ( to_uid , to_balance_before , to_balance_after , from_uid , from_balance_before , from_balance_after , fee , timestamp, tx_type)
                             values 
                             (?,?,?,?,?,?,?,?, ?)
                    """, (to_uid, to_bal, to_aft_bal, from_uid, from_bal, from_aft_bal, fee, int(round(datetime.now().timestamp())), 
-                            tx_type )) # tx_type = 5 for direct transfer
+                            tx_type )) 
     conn.commit()
     return {
         'tid': cursor.lastrowid,
@@ -286,7 +286,9 @@ def init_db():
                             lat real not null,
                             lng real not null,
                             name text not null,
-                            withdrawal int not null
+                            withdrawal int not null,
+                            uid integer not null,
+                            foreign key (uid) references users (uid)
                     )""")
     # create table for rewards
     cursor.execute("""create table if not exists rewards (
@@ -298,18 +300,12 @@ def init_db():
                             foreign key (uid) references users (uid)
                     )""")
     
-    tiktok = insert_user_if_not_exist('tiktok', 'tiktok@gmail.com', 'TikTok', balance=100000000)
+    tiktok = insert_user_if_not_exist('tiktok', 'tiktok@gmail.com', 'TikTok', balance=100000)
     alex = insert_user_if_not_exist('alex', 'alex@gmail.com', 'Alex Lim', balance=0)
     jane = insert_user_if_not_exist('jane', 'jane@gmail.com', 'Jane Tan', balance=0)
     print('inserted', alex)
     print('inserted', jane)
-    if tiktok != -1 and alex != -1 and jane != -1:
-        perform_transfer(tiktok, alex, 100) # topup
-        perform_transfer(tiktok, jane, 150) # topup
-        perform_transfer(alex, jane, 50)    # transfer
-        perform_transfer(alex, tiktok, 2, tx_type_str='CONTENT-SUBSCRIPTION')   # content-subscription
-        perform_transfer(alex, tiktok, 5, tx_type_str='AD-MANAGER')   # ad-manager
-        perform_transfer(alex, tiktok, 10)  # withdraw
+
     stores = [
         {
             "address": 'Singapore 467360',
@@ -459,8 +455,15 @@ def init_db():
         name = store["name"]
         withdrawal = store["withdrawal"]
         if not address_exists(address):
-            insert_store(address, lat, lng, name, withdrawal)
+            _, last_store_uid = insert_store(address, lat, lng, name, withdrawal)
     conn.commit()
+    if alex != -1 and jane != -1:
+        perform_transfer(last_store_uid, alex, 100, tx_type_str='TOPUP(STORE)') # topup
+        perform_transfer(last_store_uid, jane, 150, tx_type_str='TOPUP(STORE)') # topup
+        perform_transfer(alex, jane, 50, tx_type_str='DIRECT-TRANSFER')    # transfer
+        perform_transfer(alex, tiktok, 2, tx_type_str='CONTENT-SUBSCRIPTION')   # content-subscription
+        perform_transfer(alex, tiktok, 5, tx_type_str='AD-MANAGER')   # ad-manager
+        perform_transfer(alex, last_store_uid, 10, tx_type_str='WITHDRAWAL(STORE)')  # withdraw
 
 init_db()
 

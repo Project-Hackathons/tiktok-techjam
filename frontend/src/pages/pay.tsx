@@ -9,6 +9,7 @@ import PaymentModal from "@/components/PaymentModal";
 
 import { userInfo, UserType } from "./api/userInfo";
 import { createPortal } from "react-dom";
+import { useRouter } from "next/router";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,6 +28,20 @@ export default function Home() {
   const [paymentAmount, setPaymentAmount] = useState("");
 
   const [docEnv, setDocEnv] = useState(false);
+
+  interface QueryParams {
+    name: string;
+    uid: number;
+  }
+
+  const router = useRouter();
+  const initialProps = router.query as unknown as QueryParams;
+
+  useEffect(() => {
+    if (initialProps.name && initialProps.uid) {
+      setPaymentUid(initialProps.uid);
+    }
+  }, [initialProps]);
 
   useEffect(() => {
     if (typeof document !== "undefined") {
@@ -62,35 +77,40 @@ export default function Home() {
             />
             <div className={styles.searchContainer}>
               <div className={styles.usersContainer}>
-                {userList
-                  .filter(
+                {[
+                  ...(initialProps.name && initialProps.uid
+                    ? [{ name: initialProps.name, uid: initialProps.uid }]
+                    : []),
+                  ...userList.filter(
                     (user) =>
                       user.name.toLowerCase().includes(search.toLowerCase()) ||
                       user.username.toLowerCase().includes(search.toLowerCase())
-                  )
-                  .map((user) => (
-                    <div
-                      key={user.username}
-                      className={`${styles.user} ${
-                        user.uid == paymentUid ? styles.userSelected : ""
-                      }`}
-                      onClick={() => {
-                        setPaymentUid(user.uid);
-                      }}
-                    >
-                      <Avatar name={user.name}></Avatar>
-                      <div className={styles.userDetails}>
-                        <div className={styles.name}>{user.name}</div>
+                  ),
+                ].map((user) => (
+                  <div
+                    key={user.uid}
+                    className={`${styles.user} ${
+                      user.uid == paymentUid ? styles.userSelected : ""
+                    }`}
+                    onClick={() => {
+                      setPaymentUid(user.uid);
+                    }}
+                  >
+                    <Avatar name={user.name}></Avatar>
+                    <div className={styles.userDetails}>
+                      <div className={styles.name}>{user.name}</div>
+                      {"username" in user && (
                         <div
                           className={styles.username}
                         >{`@${user.username}`}</div>
-                      </div>
-                      <HiOutlineChevronRight
-                        size={28}
-                        style={{ marginLeft: "auto" }}
-                      />
+                      )}
                     </div>
-                  ))}
+                    <HiOutlineChevronRight
+                      size={28}
+                      style={{ marginLeft: "auto" }}
+                    />
+                  </div>
+                ))}
               </div>
             </div>
             <div
@@ -205,9 +225,14 @@ export default function Home() {
               }}
               paymentUid={paymentUid}
               paymentHandle={
-                userList.find((el) => {
+                [
+                  ...(initialProps.name && initialProps.uid
+                    ? [{ name: initialProps.name, uid: initialProps.uid }]
+                    : []),
+                  ...userList,
+                ].find((el) => {
                   return el.uid === paymentUid;
-                })?.username
+                })?.name
               }
               paymentAmount={paymentAmount.slice(1)}
               userDetails={userDetails}

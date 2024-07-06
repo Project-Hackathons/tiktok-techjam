@@ -1,0 +1,42 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6vh 30px;
+  gap: 15px;
+}
+
+.headingContainer {
+  width: 100%;
+  color: var(--color-white);
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.subtitle {
+  width: 100%;
+  color: var(--color-white);
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.table {
+  width: 360px;
+  margin-top: 20px;
+  background-color: #1a1a1a; /* Dark background color */
+  color: #ffffff; /* White text color */
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #333; /* Dark border color */
+  width: 280px;
+}
+
+.table th {
+  background-color: #333; /* Darker header background color */
+  width: 30%;
+}

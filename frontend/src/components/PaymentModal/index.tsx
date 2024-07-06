@@ -37,7 +37,9 @@ const PaymentModal = ({
       .then((response) => response.json())
       .then(() => {
         // TODO: validate POST req success
-        router.push("/transaction_success");
+        router.push(
+          `/transaction_success?name=${paymentHandle}&amount=${paymentAmount}&time=${new Date().toISOString()}`
+        );
       })
       .catch((error) => {
         console.error("Error:", error);

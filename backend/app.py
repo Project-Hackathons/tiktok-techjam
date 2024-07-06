@@ -10,10 +10,12 @@ app = Flask(__name__)
 CORS(app)
 
 def username_exists(username):
+    cursor = conn.cursor()
     cursor.execute("select 1 from users where username = ?", (username,))
     return cursor.fetchone() is not None
 
 def insert_user(username, email, display_name, balance=0, add_withdrawal = False):
+    cursor = conn.cursor()
     cursor.execute("insert into users (username, email, display_name, balance) values (?,?,?,?)", (username, email, display_name, balance))
     conn.commit()
     return cursor.lastrowid
@@ -40,6 +42,7 @@ def give_default_rewards(uid):
     for reward in default_rewards:
         message = reward["rewardMessage"]
         amount = reward["rewardAmount"]
+        cursor = conn.cursor()
         cursor.execute("insert into rewards (message, amount, claimed, uid) values (?,?,?,?)", (message, amount, False, uid))
     conn.commit()
 
@@ -51,15 +54,18 @@ def insert_user_if_not_exist(username, email, display_name, balance):
     return -1
 
 def address_exists(address):
+    cursor = conn.cursor()
     cursor.execute("select 1 from stores where address = ?", (address,))
     return cursor.fetchone() is not None
 
 def insert_store(address, lat, lng, name, withdrawal):
+    cursor = conn.cursor()
     cursor.execute("insert into stores (address, lat, lng, name, withdrawal) values (?,?,?,?,?)", (address, lat, lng, name, withdrawal))
     conn.commit()
     return cursor.lastrowid
 
 def get_tx(uid):
+    cursor = conn.cursor()
     cursor.execute("""select u.uid, u.username, u.email, u.display_name, u.balance, t.tid, t.to_uid, t.to_balance_before, t.to_balance_after, t.from_uid, t.from_balance_before, t.from_balance_after, t.fee, t.timestamp, t.tx_type
                         from users u
                         left join transactions t on u.uid = t.to_uid or u.uid = t.from_uid
@@ -73,6 +79,7 @@ def hello_world():
 
 @app.route('/claim/<rid>')
 def claim(rid):
+    cursor = conn.cursor()
     cursor.execute("select message, amount, claimed, uid from rewards where rid = ?", (rid,))
     reward = cursor.fetchone()
     if reward is None:
@@ -83,12 +90,14 @@ def claim(rid):
     uid = reward[3]
     if claimed:
         return {"error": "reward already claimed"}, 200
+    cursor = conn.cursor()
     cursor.execute("update rewards set claimed = 1 where rid = ?", (rid,))
     cursor.execute("update users set balance = balance + ? where uid = ?", (amount, uid))
     conn.commit()
     return {"status": "claimed", "message": message, "amount": amount}, 200
 
 def get_rewards(uid):
+    cursor = conn.cursor()
     cursor.execute("select rid, message, amount, claimed from rewards where uid = ?", (uid,))
     rewards = cursor.fetchall()
     rewards_json = []
@@ -157,6 +166,7 @@ def create_user():
 
 @app.route('/stores')
 def fetch_stores():
+    cursor = conn.cursor()
     cursor.execute("select address, lat, lng, name, withdrawal from stores")
     stores = cursor.fetchall()
     stores_json = []
@@ -187,7 +197,17 @@ def create_store():
 
 def perform_transfer(from_uid, to_uid, amount, tx_type_str=''):
     fee = 0
+    if (to_uid == 1):
+        tx_type = 0 # withdrawal
+        if (tx_type_str != ''):
+            tx_type = tx_types.index(tx_type_str)
+    elif (from_uid == 1):
+        tx_type = 1 # topup
+    else:
+        tx_type = 5 # transfer
+        fee = 1
     print("performing transfer", from_uid, to_uid, amount)
+    cursor = conn.cursor()
     cursor.execute("select balance from users where uid = ?", (from_uid,))
     from_bal = cursor.fetchone()
     if from_bal is None:
@@ -205,15 +225,7 @@ def perform_transfer(from_uid, to_uid, amount, tx_type_str=''):
     to_aft_bal = to_bal + amount - fee
     cursor.execute("update users set balance = ? where uid = ?", (from_aft_bal, from_uid))
     cursor.execute("update users set balance = ? where uid = ?", (to_aft_bal, to_uid))
-    if (to_uid == 1):
-        tx_type = 0 # withdrawal
-        if (tx_type_str != ''):
-            tx_type = tx_types.index(tx_type_str)
-    elif (from_uid == 1):
-        tx_type = 1 # topup
-    else:
-        tx_type = 5 # transfer
-        fee = 1
+
     cursor.execute("""insert into transactions
                             ( to_uid , to_balance_before , to_balance_after , from_uid , from_balance_before , from_balance_after , fee , timestamp, tx_type)
                             values 
@@ -246,6 +258,7 @@ def transfer():
     return jsonify(perform_transfer(to_uid, from_uid, amount))
 
 def init_db():
+    cursor = conn.cursor()
     cursor.execute("""create table if not exists users (
                             uid integer primary key autoincrement, 
                             username text not null unique,

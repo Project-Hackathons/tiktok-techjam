@@ -21,7 +21,6 @@ const PaymentModal = ({
   };
 
   const handleConfirmTransaction = () => {
-    const accessToken = "<access_token>"; // TODO: replace with access token (from cookies?)
     const data = {
       from: userDetails.uid,
       to: paymentUid,
@@ -32,7 +31,6 @@ const PaymentModal = ({
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(data),
     })

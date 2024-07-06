@@ -174,7 +174,7 @@ def create_user():
 @app.route('/stores')
 def fetch_stores():
     cursor = conn.cursor()
-    cursor.execute("select address, lat, lng, name, withdrawal, uid from stores")
+    cursor.execute("select address, lat, lng, name, u.balance, stores.uid from stores left join users u on stores.uid = u.uid")
     stores = cursor.fetchall()
     stores_json = []
     for store in stores:

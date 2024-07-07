@@ -135,7 +135,7 @@ const Home = () => {
                           variant="outline"
                           color="white"
                           _hover={{ bg: "gray.900" }}
-                          onClick={() => router.push("/pay")}
+                          onClick={() => router.push("/map")}
                         >
                           Withdraw
                         </Button>

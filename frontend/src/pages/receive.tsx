@@ -10,7 +10,7 @@ const Index = ({}: any) => {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch("http://152.42.182.247:5000/user/1");
+      const response = await fetch("http://152.42.182.247:5000/user/2");
       if (!response.ok) {
         throw new Error("Fetching Error");
       }

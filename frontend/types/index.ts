@@ -12,6 +12,8 @@ interface Transaction {
   fee: number;
   from: TransactionDetail;
   to: TransactionDetail;
+  type: string
+  timestamp: number
 }
 
 interface TransactionDetail {

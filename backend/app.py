@@ -10,10 +10,12 @@ app = Flask(__name__)
 CORS(app)
 
 def username_exists(username):
+    cursor = conn.cursor()
     cursor.execute("select 1 from users where username = ?", (username,))
     return cursor.fetchone() is not None
 
-def insert_user(username, email, display_name, balance=0):
+def insert_user(username, email, display_name, balance=0, add_withdrawal = False):
+    cursor = conn.cursor()
     cursor.execute("insert into users (username, email, display_name, balance) values (?,?,?,?)", (username, email, display_name, balance))
     conn.commit()
     return cursor.lastrowid
@@ -40,6 +42,7 @@ def give_default_rewards(uid):
     for reward in default_rewards:
         message = reward["rewardMessage"]
         amount = reward["rewardAmount"]
+        cursor = conn.cursor()
         cursor.execute("insert into rewards (message, amount, claimed, uid) values (?,?,?,?)", (message, amount, False, uid))
     conn.commit()
 
@@ -51,16 +54,26 @@ def insert_user_if_not_exist(username, email, display_name, balance):
     return -1
 
 def address_exists(address):
+    cursor = conn.cursor()
     cursor.execute("select 1 from stores where address = ?", (address,))
     return cursor.fetchone() is not None
 
 def insert_store(address, lat, lng, name, withdrawal):
-    cursor.execute("insert into stores (address, lat, lng, name, withdrawal) values (?,?,?,?,?)", (address, lat, lng, name, withdrawal))
+    store_username = 'store_'+str(hash(address))
+    print("store_username", store_username)
+    store_user_id = insert_user_if_not_exist(store_username, store_username + "@gmail.com", name, withdrawal)
+
+    cursor = conn.cursor()
+    cursor.execute("insert into stores (address, lat, lng, name, withdrawal, uid) values (?,?,?,?,?,?)", (address, lat, lng, name, withdrawal, store_user_id))
     conn.commit()
-    return cursor.lastrowid
+    store_id = cursor.lastrowid
+    # insert store owner as user
+    # hash the address to get a unique username
+    return store_id, store_user_id
 
 def get_tx(uid):
-    cursor.execute("""select u.uid, u.username, u.email, u.display_name, u.balance, t.tid, t.to_uid, t.to_balance_before, t.to_balance_after, t.from_uid, t.from_balance_before, t.from_balance_after, t.fee, t.timestamp 
+    cursor = conn.cursor()
+    cursor.execute("""select u.uid, u.username, u.email, u.display_name, u.balance, t.tid, t.to_uid, t.to_balance_before, t.to_balance_after, t.from_uid, t.from_balance_before, t.from_balance_after, t.fee, t.timestamp, t.tx_type
                         from users u
                         left join transactions t on u.uid = t.to_uid or u.uid = t.from_uid
                         where u.uid = ?
@@ -73,6 +86,7 @@ def hello_world():
 
 @app.route('/claim/<rid>')
 def claim(rid):
+    cursor = conn.cursor()
     cursor.execute("select message, amount, claimed, uid from rewards where rid = ?", (rid,))
     reward = cursor.fetchone()
     if reward is None:
@@ -83,12 +97,14 @@ def claim(rid):
     uid = reward[3]
     if claimed:
         return {"error": "reward already claimed"}, 200
+    cursor = conn.cursor()
     cursor.execute("update rewards set claimed = 1 where rid = ?", (rid,))
     cursor.execute("update users set balance = balance + ? where uid = ?", (amount, uid))
     conn.commit()
     return {"status": "claimed", "message": message, "amount": amount}, 200
 
 def get_rewards(uid):
+    cursor = conn.cursor()
     cursor.execute("select rid, message, amount, claimed from rewards where uid = ?", (uid,))
     rewards = cursor.fetchall()
     rewards_json = []
@@ -101,6 +117,8 @@ def get_rewards(uid):
         }
         rewards_json.append(reward_dict)
     return rewards_json
+
+tx_types = ["WITHDRAWAL(STORE)", "TOPUP(STORE)", "DIRECT-MESSAGE", "CONTENT-SUBSCRIPTION", "AD-MANAGER","DIRECT-TRANSFER"]
     
 @app.route('/user/<uid>')
 def user(uid):
@@ -108,8 +126,8 @@ def user(uid):
     rewards = get_rewards(uid)
     if data is None:
         return jsonify({'error': 'user not found'}), 404
-    data = data
     txs = []
+    print(data)
     for i in data:
         print(i)
         txs.append({
@@ -125,7 +143,8 @@ def user(uid):
                         'balance_after': i[11]
                         },
                     'fee': i[12],
-                    'timestamp': i[13]
+                    'timestamp': i[13],
+                    'type': tx_types[i[14]]
                     })
     data = data[0]
     return jsonify({
@@ -154,7 +173,8 @@ def create_user():
 
 @app.route('/stores')
 def fetch_stores():
-    cursor.execute("select address, lat, lng, name, withdrawal from stores")
+    cursor = conn.cursor()
+    cursor.execute("select address, lat, lng, name, u.balance, stores.uid from stores left join users u on stores.uid = u.uid")
     stores = cursor.fetchall()
     stores_json = []
     for store in stores:
@@ -163,7 +183,8 @@ def fetch_stores():
                 'lat': store[1],
                 'lng': store[2],
                 'name': store[3],
-                'withdrawal': store[4]
+                'withdrawal': store[4],
+                'uid': store[5]
         }
         stores_json.append(store_dict)
     return jsonify(stores_json), 200
@@ -180,10 +201,12 @@ def create_store():
     withdrawal = data.get("withdrawal")
     if address_exists(address):
         return {"sid": -2}, 200
-    return {"sid": insert_store(address, lat, lng, name, withdrawal)}, 200
+    return {"sid": insert_store(address, lat, lng, name, withdrawal)[0]}, 200
 
-fee = 1
-def perform_transfer(to_uid, from_uid, amount):
+def perform_transfer(from_uid, to_uid, amount, tx_type_str='DIRECT-TRANSFER'):
+    fee = (1 if tx_type_str == 'DIRECT-TRANSFER' else 0)
+    print("performing transfer", from_uid, to_uid, amount)
+    cursor = conn.cursor()
     cursor.execute("select balance from users where uid = ?", (from_uid,))
     from_bal = cursor.fetchone()
     if from_bal is None:
@@ -201,11 +224,14 @@ def perform_transfer(to_uid, from_uid, amount):
     to_aft_bal = to_bal + amount - fee
     cursor.execute("update users set balance = ? where uid = ?", (from_aft_bal, from_uid))
     cursor.execute("update users set balance = ? where uid = ?", (to_aft_bal, to_uid))
+
+    tx_type = tx_types.index(tx_type_str)
     cursor.execute("""insert into transactions
-                            ( to_uid , to_balance_before , to_balance_after , from_uid , from_balance_before , from_balance_after , fee , timestamp )
+                            ( to_uid , to_balance_before , to_balance_after , from_uid , from_balance_before , from_balance_after , fee , timestamp, tx_type)
                             values 
-                            (?,?,?,?,?,?,?,?)
-                   """, (to_uid, to_bal, to_aft_bal, from_uid, from_bal, from_aft_bal, fee, int(round(datetime.now().timestamp()))))
+                            (?,?,?,?,?,?,?,?, ?)
+                   """, (to_uid, to_bal, to_aft_bal, from_uid, from_bal, from_aft_bal, fee, int(round(datetime.now().timestamp())), 
+                            tx_type )) 
     conn.commit()
     return {
         'tid': cursor.lastrowid,
@@ -232,6 +258,7 @@ def transfer():
     return jsonify(perform_transfer(to_uid, from_uid, amount))
 
 def init_db():
+    cursor = conn.cursor()
     cursor.execute("""create table if not exists users (
                             uid integer primary key autoincrement, 
                             username text not null unique,
@@ -249,6 +276,7 @@ def init_db():
                             from_balance_after int not null,
                             fee int not null,
                             timestamp integer not null,
+                            tx_type int not null,
                             foreign key (to_uid) references users (to_uid),
                             foreign key (from_uid) references users (from_uid)
                       )""")
@@ -258,7 +286,9 @@ def init_db():
                             lat real not null,
                             lng real not null,
                             name text not null,
-                            withdrawal int not null
+                            withdrawal int not null,
+                            uid integer not null,
+                            foreign key (uid) references users (uid)
                     )""")
     # create table for rewards
     cursor.execute("""create table if not exists rewards (
@@ -270,12 +300,12 @@ def init_db():
                             foreign key (uid) references users (uid)
                     )""")
     
-    alex = insert_user_if_not_exist('alex', 'alex@gmail.com', 'Alex Lim', balance=100)
-    jane = insert_user_if_not_exist('jane', 'jane@gmail.com', 'Jane Tan', balance=200)
+    tiktok = insert_user_if_not_exist('tiktok', 'tiktok@gmail.com', 'TikTok', balance=100000)
+    alex = insert_user_if_not_exist('alex', 'alex@gmail.com', 'Alex Lim', balance=0)
+    jane = insert_user_if_not_exist('jane', 'jane@gmail.com', 'Jane Tan', balance=0)
     print('inserted', alex)
     print('inserted', jane)
-    if alex != -1 and jane != -1:
-        perform_transfer(alex, jane, 50)
+
     stores = [
         {
             "address": 'Singapore 467360',
@@ -425,8 +455,15 @@ def init_db():
         name = store["name"]
         withdrawal = store["withdrawal"]
         if not address_exists(address):
-            insert_store(address, lat, lng, name, withdrawal)
+            _, last_store_uid = insert_store(address, lat, lng, name, withdrawal)
     conn.commit()
+    if alex != -1 and jane != -1:
+        perform_transfer(last_store_uid, alex, 100, tx_type_str='TOPUP(STORE)') # topup
+        perform_transfer(last_store_uid, jane, 150, tx_type_str='TOPUP(STORE)') # topup
+        perform_transfer(alex, jane, 50, tx_type_str='DIRECT-TRANSFER')    # transfer
+        perform_transfer(alex, tiktok, 2, tx_type_str='CONTENT-SUBSCRIPTION')   # content-subscription
+        perform_transfer(alex, tiktok, 5, tx_type_str='AD-MANAGER')   # ad-manager
+        perform_transfer(alex, last_store_uid, 10, tx_type_str='WITHDRAWAL(STORE)')  # withdraw
 
 init_db()
 

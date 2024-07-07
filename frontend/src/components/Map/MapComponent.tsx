@@ -36,12 +36,12 @@ const MapComponent = () => {
     try {
       const response = await axios.get("http://152.42.182.247:5000/stores");
       const stores = response.data;
+      console.log(stores)
       setStores(stores);
       return stores; // You can return the stores or handle them as needed
     } catch (error) {
       console.error("Error fetching stores:", error);
     }
-    //   {
     //     address: "Singapore 467360",
     //     lat: 1.324592,
     //     lng: 103.9292631,

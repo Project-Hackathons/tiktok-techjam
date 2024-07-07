@@ -166,6 +166,15 @@ export default function Home() {
       height="100vh"
       w="100%"
       className={styles.main}
+      maxH="100vh"
+      overflowY="scroll"
+      sx={{
+        "::-webkit-scrollbar": {
+          display: "none", // Hide scrollbar for Chrome, Safari, and Opera
+        },
+        "-ms-overflow-style": "none", // Hide scrollbar for Internet Explorer and Edge
+        "scrollbar-width": "none", // Hide scrollbar for Firefox
+      }}
     >
       <div className={styles.headingContainer}>Transfer</div>
       <div className={styles.balanceContainer}>

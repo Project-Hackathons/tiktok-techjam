@@ -99,14 +99,22 @@ const Rewards = () => {
         {/* <meta name="viewport" content="width=device-width, initial-scale=1" /> */}
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Flex bg="#070F2B" w="100%" pb="80px">
-        <VStack gap="1.5rem" w="100%">
-          <Flex
-            w="100vw"
-            justifyContent="center"
-            pt="1.5rem"
-            direction="column"
-          >
+      <Flex bg="#070F2B" w="100%" pb="80px" h="100vh">
+        <VStack
+          gap="1.5rem"
+          w="100%"
+          maxW="420px"
+          maxH="100vh"
+          overflowY="scroll"
+          sx={{
+            "::-webkit-scrollbar": {
+              display: "none", // Hide scrollbar for Chrome, Safari, and Opera
+            },
+            "-ms-overflow-style": "none", // Hide scrollbar for Internet Explorer and Edge
+            "scrollbar-width": "none", // Hide scrollbar for Firefox
+          }}
+        >
+          <Flex w="100%" justifyContent="center" pt="1.5rem" direction="column">
             <Text
               textAlign="center"
               color="white"

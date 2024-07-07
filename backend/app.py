@@ -101,6 +101,7 @@ def claim(rid):
     cursor.execute("update rewards set claimed = 1 where rid = ?", (rid,))
     cursor.execute("update users set balance = balance + ? where uid = ?", (amount, uid))
     conn.commit()
+    perform_transfer(1, uid, amount, tx_type_str='CASHBACK')
     return {"status": "claimed", "message": message, "amount": amount}, 200
 
 def get_rewards(uid):
@@ -118,7 +119,7 @@ def get_rewards(uid):
         rewards_json.append(reward_dict)
     return rewards_json
 
-tx_types = ["WITHDRAWAL(STORE)", "TOPUP(STORE)", "DIRECT-MESSAGE", "CONTENT-SUBSCRIPTION", "AD-MANAGER","DIRECT-TRANSFER"]
+tx_types = ["WITHDRAWAL(STORE)", "TOPUP(STORE)", "DIRECT-MESSAGE", "CONTENT-SUBSCRIPTION", "AD-MANAGER","DIRECT-TRANSFER", "CASHBACK"]
     
 @app.route('/user/<uid>')
 def user(uid):
@@ -169,6 +170,23 @@ def create_user():
     if username_exists(username):
         return {"uid": -2}, 200
     return {"uid": insert_user(username, email, display_name, balance)}, 200
+
+@app.route('/friends')
+def friends():
+    cursor = conn.cursor()
+    cursor.execute("select username, email, display_name, balance, uid from users")
+    users = cursor.fetchall()
+    users_json = []
+    for user in users:
+        user_dict = {
+                'username': user[0],
+                'email': user[1],
+                'display_name': user[2],
+                'balance': user[3],
+                'uid': user[4]
+        }
+        users_json.append(user_dict)
+    return jsonify(users_json), 200
 
 
 @app.route('/stores')
@@ -255,7 +273,7 @@ def transfer():
     to_uid = data.get("to")
     from_uid = data.get("from")
     amount = data.get("amount")
-    return jsonify(perform_transfer(to_uid, from_uid, amount))
+    return jsonify(perform_transfer(from_uid, to_uid, amount))
 
 def init_db():
     cursor = conn.cursor()
@@ -303,6 +321,10 @@ def init_db():
     tiktok = insert_user_if_not_exist('tiktok', 'tiktok@gmail.com', 'TikTok', balance=100000)
     alex = insert_user_if_not_exist('alex', 'alex@gmail.com', 'Alex Lim', balance=0)
     jane = insert_user_if_not_exist('jane', 'jane@gmail.com', 'Jane Tan', balance=0)
+    insert_user_if_not_exist('benjamin', 'ben@gmail.com', 'Benjamin Pang', balance=0)
+    insert_user_if_not_exist('benny', 'meow@gmail.com', 'Benny Pang', balance=0)
+    insert_user_if_not_exist('tom', 'tom@gmail.com', 'Tom', balance=0)
+    insert_user_if_not_exist('jimmy', 'jimmy@gmail.com', 'Jimmy', balance=0)
     print('inserted', alex)
     print('inserted', jane)
 

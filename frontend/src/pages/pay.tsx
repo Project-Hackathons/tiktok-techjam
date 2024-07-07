@@ -27,6 +27,7 @@ export default function Home() {
   const [paymentUid, setPaymentUid] = useState<Number | null>();
   const [paymentAmount, setPaymentAmount] = useState("");
   const [paymentHandle, setPaymentHandle] = useState("");
+  const [friends, setFriends] = useState();
 
   const [docEnv, setDocEnv] = useState(false);
 
@@ -59,10 +60,27 @@ export default function Home() {
     getUserInfo();
   }, []);
 
-  const userList = [
-    { name: "Joseph Son", username: "joseph_sonny", uid: 2 },
-    { name: "Friend number 1", username: "friendly_man", uid: 3 },
-  ];
+  useEffect(() => {
+    (async () => {
+      let userDeets = await userInfo();
+      setUserDetails(userDeets);
+      const response = await fetch("https://tt.tchlabs.net/friends");
+      if (!response.ok) {
+        throw new Error("Fetching Error");
+      }
+      const data = await response.json();
+      console.log(data);
+      setFriends(
+        data.filter((line: any) => {
+          return !(
+            line.username.startsWith("store_") ||
+            (userDeets && line.uid === userDeets.uid) ||
+            line.uid === 1
+          );
+        })
+      );
+    })();
+  }, []);
 
   const renderPaymentBody = () => {
     switch (paymentType) {
@@ -83,11 +101,17 @@ export default function Home() {
                   ...(initialProps.name && initialProps.uid
                     ? [{ name: initialProps.name, uid: initialProps.uid }]
                     : []),
-                  ...userList.filter(
-                    (user) =>
-                      user.name.toLowerCase().includes(search.toLowerCase()) ||
-                      user.username.toLowerCase().includes(search.toLowerCase())
-                  ),
+                  ...(friends
+                    ? friends.filter(
+                        (user: any) =>
+                          user.display_name
+                            .toLowerCase()
+                            .includes(search.toLowerCase()) ||
+                          user.username
+                            .toLowerCase()
+                            .includes(search.toLowerCase())
+                      )
+                    : []),
                 ].map((user) => (
                   <div
                     key={user.uid}
@@ -96,13 +120,13 @@ export default function Home() {
                     }`}
                     onClick={() => {
                       setPaymentUid(user.uid);
-                      setPaymentHandle(user.name);
+                      setPaymentHandle(user.display_name);
                     }}
                   >
-                    <Avatar name={user.name}></Avatar>
+                    <Avatar name={user.display_name}></Avatar>
                     <div className={styles.userDetails}>
-                      <div className={styles.name}>{user.name}</div>
-                      {"username" in user && (
+                      <div className={styles.name}>{user.display_name}</div>
+                      {"display_name" in user && (
                         <div
                           className={styles.username}
                         >{`@${user.username}`}</div>

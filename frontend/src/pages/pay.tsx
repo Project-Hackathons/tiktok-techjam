@@ -148,6 +148,9 @@ export default function Home() {
           <div className={styles.qrContainer}>
             <Scanner
               onScan={(result) => {
+                if (paymentAmount == "") {
+                  return;
+                }
                 const res = JSON.parse(result[0].rawValue);
                 setPaymentUid(parseInt(res.uid));
                 setPaymentHandle(res.name);

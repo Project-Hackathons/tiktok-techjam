@@ -80,7 +80,7 @@ const TransactionList = ({ userData }: { userData: User }) => {
               </Text>
             ) : (
               <Text fontWeight="semibold" fontSize="lg" color="green.300">
-                + ${(t.from.balance_before - t.from.balance_after).toFixed(2)}
+                + ${(t.from.balance_before - t.from.balance_after - t.fee).toFixed(2)}
               </Text>
             )}
           </Flex>

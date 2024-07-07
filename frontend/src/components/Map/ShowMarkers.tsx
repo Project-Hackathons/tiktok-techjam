@@ -36,7 +36,12 @@ export interface Store {
   lng: number;
   name: string;
   withdrawal: number;
-  uid: number
+  uid: number;
+}
+
+export interface CStore {
+  uid: number;
+  name: string;
 }
 
 const RedMarker = L.icon({
@@ -60,6 +65,7 @@ const ShowMarkers = ({ stores }: { stores: Store[] }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [currZoom, setCurrZoom] = useState(50);
   const [mapBounds, setMapBounds] = useState<LatLngBounds | null>(null);
+  const [currStore, setCurrStore] = useState<CStore | null>(null);
 
   const map = useMapEvents({
     moveend: debounce(() => {
@@ -81,50 +87,18 @@ const ShowMarkers = ({ stores }: { stores: Store[] }) => {
 
   const router = useRouter();
 
+  const transact = (store: Store) => {
+    setCurrStore({
+      uid: store.uid,
+      name: store.name,
+    });
+    onOpen();
+  };
+
   const MemoizedMarker = memo(
     ({ position, store }: { position: LatLngTuple; store: Store }) => (
       <>
         {" "}
-        <Modal isOpen={isOpen} onClose={onClose} isCentered>
-          <ModalOverlay />
-          <ModalContent maxW="380px">
-            <ModalHeader>What would you like to do?</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody pb="3rem">
-              <VStack gap={"2rem"}>
-                <Button
-                  w="90%"
-                  h="9rem"
-                  variant="outline"
-                  boxShadow="lg"
-                  onClick={() => router.push("/receive")}
-                >
-                  <Text fontSize="x-large">
-                    <Flex w="100%" justifyContent="center" pb="1rem">
-                      <Icon boxSize={10} as={FaMoneyBill} />
-                    </Flex>
-                    Top-up
-                  </Text>
-                </Button>
-
-                <Button
-                  w="90%"
-                  h="9rem"
-                  variant="outline"
-                  boxShadow="lg"
-                  onClick={() => router.push(`/pay?uid=${store.uid}&name=${encodeURIComponent(store.name)}`)}
-                >
-                  <Text fontSize="x-large">
-                    <Flex w="100%" justifyContent="center" pb="1rem">
-                      <Icon boxSize={10} as={BiMoneyWithdraw} />
-                    </Flex>
-                    Withdraw
-                  </Text>
-                </Button>
-              </VStack>
-            </ModalBody>
-          </ModalContent>
-        </Modal>
         <Marker position={position} icon={RedMarker}>
           <Popup>
             <Flex
@@ -167,7 +141,7 @@ const ShowMarkers = ({ stores }: { stores: Store[] }) => {
                 <Button
                   flex={1}
                   onClick={() => {
-                    onOpen();
+                    transact(store);
                   }}
                   alignSelf="end"
                   size="sm"
@@ -203,6 +177,50 @@ const ShowMarkers = ({ stores }: { stores: Store[] }) => {
     <>
       {currZoom > 12 ? (
         <>
+          <Modal isOpen={isOpen} onClose={onClose} isCentered>
+            <ModalOverlay />
+            <ModalContent maxW="380px">
+              <ModalHeader>What would you like to do?</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody pb="3rem">
+                <VStack gap={"2rem"}>
+                  <Button
+                    w="90%"
+                    h="9rem"
+                    variant="outline"
+                    boxShadow="lg"
+                    onClick={() => router.push("/receive")}
+                  >
+                    <Text fontSize="x-large">
+                      <Flex w="100%" justifyContent="center" pb="1rem">
+                        <Icon boxSize={10} as={FaMoneyBill} />
+                      </Flex>
+                      Top-up
+                    </Text>
+                  </Button>
+
+                  <Button
+                    w="90%"
+                    h="9rem"
+                    variant="outline"
+                    boxShadow="lg"
+                    onClick={() =>
+                      router.push(
+                        `/pay?uid=${currStore.uid}&name=${encodeURIComponent(currStore.name)}`
+                      )
+                    }
+                  >
+                    <Text fontSize="x-large">
+                      <Flex w="100%" justifyContent="center" pb="1rem">
+                        <Icon boxSize={10} as={BiMoneyWithdraw} />
+                      </Flex>
+                      Withdraw
+                    </Text>
+                  </Button>
+                </VStack>
+              </ModalBody>
+            </ModalContent>
+          </Modal>
           {visibleMarkers.map((store) => (
             <MemoizedMarker
               key={store.address}

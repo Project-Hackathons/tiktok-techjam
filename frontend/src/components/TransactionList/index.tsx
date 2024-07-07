@@ -33,9 +33,9 @@ const TransactionList = ({ userData }: { userData: User }) => {
     "TOPUP(STORE)": FaMoneyBill,
     "WITHDRAWAL(STORE)": BiMoneyWithdraw,
     "DIRECT-TRANSFER": BiTransfer,
-    "CONTENT-SUBSCRIPTION":GoFileMedia,
-    "AD-MANAGER":AiOutlineStock
-  }
+    "CONTENT-SUBSCRIPTION": GoFileMedia,
+    "AD-MANAGER": AiOutlineStock,
+  };
 
   return (
     <Flex w="80%" h="50%" flexDir="column">
@@ -62,7 +62,7 @@ const TransactionList = ({ userData }: { userData: User }) => {
                 justifyContent="center"
                 alignItems="center"
               >
-                <Icon as={transactionIconMap[t.type]}/>
+                <Icon as={transactionIconMap[t.type]} />
               </Flex>
               <VStack
                 gap={0}
@@ -76,11 +76,11 @@ const TransactionList = ({ userData }: { userData: User }) => {
             </HStack>
             {t.from.uid == parseInt(userData.uid) ? (
               <Text fontWeight="semibold" fontSize="lg">
-                - ${t.from.balance_before - t.from.balance_after}
+                - ${(t.from.balance_before - t.from.balance_after).toFixed(2)}
               </Text>
             ) : (
               <Text fontWeight="semibold" fontSize="lg" color="green.300">
-                + ${t.from.balance_before - t.from.balance_after}
+                + ${(t.from.balance_before - t.from.balance_after).toFixed(2)}
               </Text>
             )}
           </Flex>

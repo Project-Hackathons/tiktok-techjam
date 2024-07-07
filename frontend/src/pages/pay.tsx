@@ -26,6 +26,7 @@ export default function Home() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentUid, setPaymentUid] = useState<Number | null>();
   const [paymentAmount, setPaymentAmount] = useState("");
+  const [paymentHandle, setPaymentHandle] = useState("");
 
   const [docEnv, setDocEnv] = useState(false);
 
@@ -94,6 +95,7 @@ export default function Home() {
                     }`}
                     onClick={() => {
                       setPaymentUid(user.uid);
+                      setPaymentHandle(user.name);
                     }}
                   >
                     <Avatar name={user.name}></Avatar>
@@ -146,7 +148,9 @@ export default function Home() {
           <div className={styles.qrContainer}>
             <Scanner
               onScan={(result) => {
-                setPaymentUid(parseInt(result[0].rawValue));
+                const res = JSON.parse(result[0].rawValue);
+                setPaymentUid(parseInt(res.uid));
+                setPaymentHandle(res.name);
                 setShowPaymentModal(true);
               }}
             />
@@ -224,16 +228,7 @@ export default function Home() {
                 setShowPaymentModal(false);
               }}
               paymentUid={paymentUid}
-              paymentHandle={
-                [
-                  ...(initialProps.name && initialProps.uid
-                    ? [{ name: initialProps.name, uid: initialProps.uid }]
-                    : []),
-                  ...userList,
-                ].find((el) => {
-                  return el.uid === paymentUid;
-                })?.name
-              }
+              paymentHandle={paymentHandle}
               paymentAmount={paymentAmount.slice(1)}
               userDetails={userDetails}
             />,

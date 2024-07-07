@@ -17,12 +17,12 @@ const History = () => {
     })();
   }, []);
   return (
-    <Flex bg="#070F2B" h="100vh" w="100%">
+    <Flex bg="#070F2B" minH="100vh" w="100%" pb="100px">
       <VStack gap="1.5rem" w="100%" pt="1.5rem">
         {userData ? (
           <TransactionList userData={userData} />
         ) : (
-          <Flex w="80%" h="50%" flexDir="column">
+          <Flex w="80%" h="100%" flexDir="column">
             <Text color="gray.100" fontSize="x-large" fontWeight="semibold">
               Transaction History
             </Text>

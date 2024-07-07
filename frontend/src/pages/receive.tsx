@@ -21,7 +21,7 @@ const Index = ({}: any) => {
 
   return (
     <Flex
-    bgGradient="linear(to-t, #ff0050, 35%, #00f2ea)"
+      bgGradient="linear(to-t, #ff0050, 35%, #00f2ea)"
       h="100vh"
       w="100%"
       style={{
@@ -41,7 +41,14 @@ const Index = ({}: any) => {
       >
         {userData && (
           <>
-            <QRCode value={userData.username} size={200} />
+            <QRCode
+              value={JSON.stringify({
+                uid: userData.uid,
+                name: userData.display_name,
+                username: userData.username,
+              })}
+              size={200}
+            />
             <Text
               color="black"
               fontWeight="semibold"

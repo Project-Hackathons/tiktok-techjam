@@ -41,6 +41,7 @@ export default function Home() {
   useEffect(() => {
     if (initialProps.name && initialProps.uid) {
       setPaymentUid(initialProps.uid);
+      setPaymentHandle(initialProps.name);
     }
   }, [initialProps]);
 

@@ -77,7 +77,7 @@ const Rewards = () => {
     // delete reward from db
     const deleteReward = async () => {
       try {
-        const response = await fetch(`http://152.42.182.247:5000/claim/${rid}`);
+        const response = await fetch(`https://tt.tchlabs.net:5000/claim/${rid}`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }

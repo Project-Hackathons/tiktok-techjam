@@ -34,7 +34,7 @@ const MapComponent = () => {
   const [stores, setStores] = useState<Store[]>([]);
   const fetchStores = async () => {
     try {
-      const response = await axios.get("http://152.42.182.247:5000/stores");
+      const response = await axios.get("https://tt.tchlabs.net:5000/stores");
       const stores = response.data;
       console.log(stores)
       setStores(stores);

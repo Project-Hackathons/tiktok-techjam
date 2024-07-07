@@ -34,9 +34,9 @@ const MapComponent = () => {
   const [stores, setStores] = useState<Store[]>([]);
   const fetchStores = async () => {
     try {
-      const response = await axios.get("https://tt.tchlabs.net:5000/stores");
+      const response = await axios.get("https://tt.tchlabs.net/stores");
       const stores = response.data;
-      console.log(stores)
+      console.log(stores);
       setStores(stores);
       return stores; // You can return the stores or handle them as needed
     } catch (error) {
@@ -342,8 +342,14 @@ const MapComponent = () => {
         </Box>
       ) : (
         <Flex w="100%" h="100vh" justifyContent="center" alignItems="center">
-          <Text fontSize="x-large" fontWeight="semibold" textAlign="center" color="white">
-            Location services need to be enabled for the best viewing experience!
+          <Text
+            fontSize="x-large"
+            fontWeight="semibold"
+            textAlign="center"
+            color="white"
+          >
+            Location services need to be enabled for the best viewing
+            experience!
           </Text>
         </Flex>
       )}

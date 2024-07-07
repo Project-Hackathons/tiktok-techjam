@@ -8,7 +8,7 @@ const History = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch("https://tt.tchlabs.net:5000/user/3");
+      const response = await fetch("https://tt.tchlabs.net/user/3");
       if (!response.ok) {
         throw new Error("Fetching Error");
       }

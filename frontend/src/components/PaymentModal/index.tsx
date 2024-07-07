@@ -27,7 +27,7 @@ const PaymentModal = ({
       amount: parseFloat(paymentAmount),
     };
 
-    fetch("https://tt.tchlabs.net:5000/transfer", {
+    fetch("https://tt.tchlabs.net/transfer", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

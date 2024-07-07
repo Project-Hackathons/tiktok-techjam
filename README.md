@@ -4,7 +4,7 @@
 <div align="center">
   <img src="/assets/unbanked.png" alt="unbanked">
 </div>
-
+<br>
 ### There are many unbanked indviduals in the world
 Overall, the World Bank estimates about one-quarter of the world’s adults don’t have access to a bank or mobile-phone account. But that varies dramatically by region. In countries that use the Euro, almost everyone has a bank account, while in the Middle East and North Africa, only about half the population does.
 
@@ -21,6 +21,7 @@ Many people are not well-served by current payment solutions that rely heavily o
   <img src="/assets/home_screen.png" alt="Tiktokens Home Screen">    
   </a>
 </div>
+<br>
 Introducing our innovative payment system integrated with TikTok Shop, which leverages neighborhood stores for cash deposits and withdrawals. Additionally, the app facilitates the instant creation of virtual cards for online payments.
 
 ## Code Structure
@@ -34,7 +35,7 @@ To deploy our code locally, you may navigate to `/frontend` and run `npm run dev
 <div align="center">
   <img src="/assets/archictecture.png" alt="Archictecture Diagram">
 </div>
-
+<br>
 This architecture demonstrates our system's infrastructure, which includes secure authentication, load balancing, auto-scaling, and seamless integration with payment service providers.
 
 ## Features

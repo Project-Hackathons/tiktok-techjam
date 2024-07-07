@@ -53,5 +53,5 @@ To deposit cash, users hand over the money to the shop owner, who then scans the
 - **Instant Virtual Card Creation**: The app allows for the instant creation of a virtual card to be used for online payments.
 
 ## Video
-[Watch our introduction video](https://www.youtube.com)
+[Watch our introduction video](https://youtu.be/eUPsZd9VtHY)
 

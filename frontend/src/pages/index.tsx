@@ -27,7 +27,7 @@ const Home = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch("http://152.42.182.247:5000/user/2");
+      const response = await fetch("http://152.42.182.247:5000/user/3");
       if (!response.ok) {
         throw new Error("Fetching Error");
       }
@@ -176,11 +176,19 @@ const Home = () => {
                           TikTok
                         </Text>
                         {showCC ? (
-                          <Button variant="ghost" _hover={{ bg: "none" }} onClick={()=>setShowCC(false)}>
+                          <Button
+                            variant="ghost"
+                            _hover={{ bg: "none" }}
+                            onClick={() => setShowCC(false)}
+                          >
                             <Icon as={IoEyeOff} color="gray.200" boxSize="7" />
                           </Button>
                         ) : (
-                          <Button variant="ghost" _hover={{ bg: "none" }} onClick={()=>setShowCC(true)}>
+                          <Button
+                            variant="ghost"
+                            _hover={{ bg: "none" }}
+                            onClick={() => setShowCC(true)}
+                          >
                             <Icon as={IoEye} color="gray.200" boxSize="7" />
                           </Button>
                         )}

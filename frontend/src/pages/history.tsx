@@ -8,7 +8,7 @@ const History = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch("http://152.42.182.247:5000/user/2");
+      const response = await fetch("http://152.42.182.247:5000/user/3");
       if (!response.ok) {
         throw new Error("Fetching Error");
       }

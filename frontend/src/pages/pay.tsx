@@ -99,7 +99,7 @@ export default function Home() {
               <div className={styles.usersContainer}>
                 {[
                   ...(initialProps.name && initialProps.uid
-                    ? [{ name: initialProps.name, uid: initialProps.uid }]
+                    ? [{ display_name: initialProps.name, uid: initialProps.uid }]
                     : []),
                   ...(friends
                     ? friends.filter(
@@ -126,7 +126,7 @@ export default function Home() {
                     <Avatar name={user.display_name}></Avatar>
                     <div className={styles.userDetails}>
                       <div className={styles.name}>{user.display_name}</div>
-                      {"display_name" in user && (
+                      {"username" in user && (
                         <div
                           className={styles.username}
                         >{`@${user.username}`}</div>
